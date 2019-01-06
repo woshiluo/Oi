@@ -1,0 +1,39 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Dinic	./orz.cpp	/^namespace Dinic{$/;"	n	file:
+INF	./orz.cpp	/^const int INF=2147483647;$/;"	v
+M	./orz.cpp	/^const int M=1100;$/;"	v
+Min	./orz.cpp	/^inline int Min(int a,int b){return a<b?a:b;}$/;"	f
+N	./orz.cpp	/^const int N=110;$/;"	v
+add_edge	./orz.cpp	/^inline void add_edge(int now,int to,int val,int un){$/;"	f
+bfs	./orz.cpp	/^	bool bfs(){$/;"	f	namespace:Dinic
+cur	./orz.cpp	/^	int depth[N],q[N],cur[N];$/;"	m	namespace:Dinic	file:
+depth	./orz.cpp	/^	int depth[N],q[N],cur[N];$/;"	m	namespace:Dinic	file:
+dfs	./orz.cpp	/^	int dfs(int now,int dist){$/;"	f	namespace:Dinic
+dfs	./orz.cpp	/^void dfs(int now){$/;"	f
+dinic	./orz.cpp	/^	inline int dinic(){$/;"	f	namespace:Dinic
+e	./orz.cpp	/^}e[M<<1];$/;"	v	typeref:struct:edge
+ecnt	./orz.cpp	/^int ehead[N],ecnt;$/;"	v
+edge	./orz.cpp	/^struct edge{$/;"	s	file:
+ehead	./orz.cpp	/^int ehead[N],ecnt;$/;"	v
+f	./orz.cpp	/^int son[N],f[N][N][N];$/;"	v
+head	./orz.cpp	/^	int head,tail,s,t; $/;"	m	namespace:Dinic	file:
+m	./orz.cpp	/^int n,m,u,v;$/;"	v
+main	./orz.cpp	/^int main(){$/;"	f
+n	./orz.cpp	/^int n,m,u,v;$/;"	v
+next	./orz.cpp	/^	int to,next,val,un;$/;"	m	struct:edge	file:
+q	./orz.cpp	/^	int depth[N],q[N],cur[N];$/;"	m	namespace:Dinic	file:
+s	./orz.cpp	/^	int head,tail,s,t; $/;"	m	namespace:Dinic	file:
+son	./orz.cpp	/^int son[N],f[N][N][N];$/;"	v
+t	./orz.cpp	/^	int head,tail,s,t; $/;"	m	namespace:Dinic	file:
+tail	./orz.cpp	/^	int head,tail,s,t; $/;"	m	namespace:Dinic	file:
+to	./orz.cpp	/^	int to,next,val,un;$/;"	m	struct:edge	file:
+u	./orz.cpp	/^int n,m,u,v;$/;"	v
+un	./orz.cpp	/^	int to,next,val,un;$/;"	m	struct:edge	file:
+v	./orz.cpp	/^int n,m,u,v;$/;"	v
+val	./orz.cpp	/^	int to,next,val,un;$/;"	m	struct:edge	file:
+vis	./orz.cpp	/^bool vis[N];$/;"	v

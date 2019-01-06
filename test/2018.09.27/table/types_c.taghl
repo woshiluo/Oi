@@ -1,0 +1,4 @@
+syn keyword CTagsGlobalVariable ct t c n k m f ct1
+syn keyword CTagsConstant N mod
+syn keyword CTagsFunction main pow
+

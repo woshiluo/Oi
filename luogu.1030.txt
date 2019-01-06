@@ -1,0 +1,6 @@
+BADC
+BDCA
+
+			A
+B				C
+					D

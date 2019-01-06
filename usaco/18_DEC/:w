@@ -1,0 +1,25 @@
+#include <cstdio>
+
+const int N=110;
+
+int n,k;
+int a[N][N],high[N],low[N];
+
+bool fill(){
+
+	return false;
+}
+
+int main(){
+	scanf("%d%d",&n,&k);
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n;j++){
+			scanf("%1d",&a[i][j]);
+			if(a[i][j]!=0){
+				if(high[i]==0) high[j]=i;
+				else low[j]=i;
+			}
+		}		
+	}
+	while(fill())fail();
+}

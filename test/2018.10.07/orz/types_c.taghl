@@ -1,0 +1,7 @@
+syn keyword CTagsStructure edge
+syn keyword CTagsMember head next tail val s depth q cur un to t
+syn keyword CTagsGlobalVariable u m son e ehead n ecnt vis v f
+syn keyword CTagsConstant N INF M
+syn keyword CTagsFunction bfs add_edge dinic Min dfs main
+syn keyword CTagsNamespace Dinic
+
