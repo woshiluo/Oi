@@ -1,27 +1,28 @@
 #include <cstdio>
-#include <cstring>
 
-int n, len, now, tmp, tcnt;
+int n, now, tmp, tcnt;
 int trie[2000000][26];
-char str[20];
+char str[20], *p;
 
 inline void insert(char *str){
-	len = strlen(str);	
+	p = str;
 	now = 0;
-	for(int i = 0; i < len; i++){
-		tmp=str[i]-'a';
+	while(*p){	
+		tmp = *p - 'a';
 		if( trie[now][tmp] == 0 ) trie[now][tmp] = ++tcnt;
 		now = trie[now][tmp];
+		p++;
 	}
 }
 
 inline bool find(char *str){
-	len = strlen(str);	
+	p = str;
 	now = 0;
-	for(int i = 0; i < len; i++){
-		tmp = str[i] - 'a';
+	while(*p){
+		tmp = *p - 'a';
 		if( trie[now][tmp] == 0 ) return false;
 		now = trie[now][tmp];
+		p++;
 	}
 	return true;
 }
