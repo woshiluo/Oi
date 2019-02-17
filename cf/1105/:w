@@ -1,0 +1,28 @@
+#include <cstdio>
+#include <queue>
+
+const int N = 1100;
+
+struct node{
+	int x, y;
+}
+
+int n, m, p, s[N];
+int col[N][N];
+char str[N];
+bool map[N][N];
+
+std::queue<int> q[10];
+
+int main(){
+	scanf("%d%d%d", &n, &m, &p);	
+	for(int i = 1; i <= n; i++) scanf("%d", s[i]);
+	for(int i = 1; i <= n; i++){
+		scanf("%s", str + 1);
+		for(int j = 1; j <= n; j++){
+			if(str[j] == '#') map[i][j] = false; 
+			else if(str[j] == '.') map[i][j] = true; 
+			else 
+		}
+	}
+}

@@ -1,0 +1,15 @@
+#include <cstdio>
+#include <cmath>
+
+int x, y, z, s;
+
+int main(){
+	scanf("%d%d%d%d", &x, &y ,&z, &s);	
+	double tmp = std::sqrt((double)(x * x) + (double)(y * y)); 	
+	if(tmp > z) printf("No\n");
+	else if(tmp <= z){
+		tmp += (s << 1);
+		if(tmp > z) printf("Possible\n");
+		else printf("Yes\n");
+	}
+}
