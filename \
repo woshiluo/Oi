@@ -1,0 +1,24 @@
+#include <cstdio>
+
+const int N = 1100;
+const int M = 510000;
+
+int n, m, s;
+
+// edge start 
+struct edge{
+	int to, next, val;
+}e[M];
+int ehead[N];
+inline void add_edge(int now, int to, int val){
+	ecnt++;
+	e[ecnt].to = to;
+	e[ecnt].val = val;
+	e[ecnt].next = ehead[now];
+	ehead[now] = ecnt;
+}
+// edge end
+
+int main(){
+	scanf("%d%d%d", &n, &m, &s);
+}
