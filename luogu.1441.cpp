@@ -30,9 +30,10 @@ void dfs(int now, int less){
 		calc();
 		return ;
 	}
+	if(now == n + 1) return ;
 	vis[now] = true;
 	dfs(now + 1, less - 1);
-	if(now + less > n) return ;
+	if(now + less > n + 1) return ;
 	vis[now] = false;
 	dfs(now + 1, less);
 }
