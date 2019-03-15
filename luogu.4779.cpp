@@ -1,16 +1,15 @@
 #include <cstdio>
+#include <queue>
 #include <cstring>
 
-const int N = 11000;
-const int M = 510000;
+const int N = 1e5 + 1e4;
+const int M = 2e5 + 1e4;
 
-int n, m, s, u, v, w;
-
-// edge start 
 struct edge{
 	int to, next, val;
 }e[M];
 int ehead[N], ecnt;
+
 inline void add_edge(int now, int to, int val){
 	ecnt++;
 	e[ecnt].to = to;
@@ -18,44 +17,50 @@ inline void add_edge(int now, int to, int val){
 	e[ecnt].next = ehead[now];
 	ehead[now] = ecnt;
 }
-// edge end
 
-// spfa start 
-int q[N], dis[N];
+struct node{
+	int now, val;
+	bool operator< (const node &b) const{
+		return this -> val > b.val;
+	}
+}tmp;
+
+std::priority_queue<node> q;
+
+int n, m, s, u, v, w;
+
+int dis[N];
 bool vis[N];
-int head, tail, head_dep, tail_dep;
-inline void spfa(){
-	head = tail = head_dep = tail_dep = 0;
+void dijkstra(int start){
 	memset(dis, 0x3f, sizeof(dis));
-	q[head] = s; dis[s] = 0;
-	while( head_dep < tail_dep || (head_dep == tail_dep && head <= tail) ){
-		for(int i = ehead[ q[head] ]; i; i = e[i].next){
-			if(dis[ e[i].to ] > dis[ q[head] ] + e[i].val){
-				dis[ e[i].to ] = dis[ q[head] ] + e[i].val;
-				if(vis[ e[i].to ] == false){
-					vis[ e[i].to ] = true;
-					tail++;
-					if( tail > n ) tail_dep++, tail = 0;
-					q[tail] = e[i].to;
-				}
-			}	
-		}	
-		vis[ q[head] ] = false;
-		head++;
-		if(head > n ) head_dep++, head = 0;
+	dis[start] = 0;
+	q.push( (node){s, 0} );
+	while( !q.empty() ){
+		tmp = q.top(); q.pop();
+		if(vis[ tmp.now ]) 
+			continue;
+		vis[ tmp.now ] = true;
+		for(int i = ehead[ tmp.now ]; i; i = e[i].next){
+			if(dis[ e[i].to ] > dis[ tmp.now ] + e[i].val){
+				dis[ e[i].to ] = dis[ tmp.now ] + e[i].val;
+				if( vis[ e[i].to ] == false )
+					q.push( (node){e[i].to, dis[ e[i].to ]} );
+			}
+		}
 	}
 }
-// spfa end
 
 int main(){
+#ifdef woshiluo
+	freopen("luogu.4779.in", "r", stdin);
+	freopen("luogu.4779.out", "w", stdout);
+#endif
 	scanf("%d%d%d", &n, &m, &s);
 	for(int i = 1; i <= m; i++){
-		scanf("%d%d%d", &u, &v, &w);
+		scanf("%d%d%d", &u, &v, &w);	
 		add_edge(u, v, w);
 	}
-	spfa();
-	for(int i = 1; i <= n; i++){
-		if(dis[i] == 0x3f3f3f3f) printf("2147483647 ");
-		else printf("%d ", dis[i]);
-	}
+	dijkstra(s);
+	for(int i = 1; i <= n; i++)
+		printf("%d ", dis[i]);
 }

@@ -1,24 +1,34 @@
 #include <cstdio>
 
 const int N = 1100;
-const int M = 510000;
 
-int n, m, s;
+int T, n, m;
+char tmp_read;;
+int height[N], width[N];
+bool map[N][N];
 
-// edge start 
-struct edge{
-	int to, next, val;
-}e[M];
-int ehead[N];
-inline void add_edge(int now, int to, int val){
-	ecnt++;
-	e[ecnt].to = to;
-	e[ecnt].val = val;
-	e[ecnt].next = ehead[now];
-	ehead[now] = ecnt;
+inline void init(){
+	
 }
-// edge end
+
+inline void readin(){
+	scanf("%d%d", &n, &m);
+	for(int i = 1; i <= n; i++){
+		for(int j = 1; j <= m; j++){
+			
+		}
+	}
+}
+
+inline void get_ans(){
+
+}
 
 int main(){
-	scanf("%d%d%d", &n, &m, &s);
+	scanf("%d", &T);
+	while(T--){
+		init();
+		readin();
+		get_ans();
+	}
 }
