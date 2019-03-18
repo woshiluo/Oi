@@ -1,112 +1,80 @@
 #include <cstdio>
-#include <queue>
 #include <cstring>
+#include <queue>
+#include <algorithm>
+
+inline int Min(int a, int b){return a < b? a: b;}
 
 const int N = 2e5 + 1e4;
 const int M = 4e5 + 1e4;
 
-int T;
-int n, m, u, v, l, a;
+struct que{
+	int now, dis;	
+	bool operator< (const node &b) const{
+		return this -> dis > b.dis;
+	}
+}tmp;
 
-class kruskal_tree{
-	public:
-		int ecnt;
-		struct edge_normal{
-			int now, to, val, hei;	
-			bool operator<(edge_normal b){
-				return this -> hei > b.hei;
+struct edge{
+	int to, val, next;
+}e[M << 1];
+int ehead[N], ecnt;
+
+std::priority_queue<node> q;
+
+// dijkstra start
+int dis[N];
+bool vis[N];
+void dijkstra(){
+	while( !q.empty() ) q.pop();	
+	memset(vis, false, sizeof(vis));
+	memset(dis, 0x3f, sizeof(dis));
+	q.push( (que){1, 0} );
+	while( !q.empty() ){
+		tmp = q.top();
+		q.pop();
+		if( vis[ tmp.now ] )
+			continue;
+		for(int i = ehead[ tmp.now ]; i; i = e[i].next){
+			if(dis[ tmp.now ] + e[i].val < dis[ e[i].to ]){
+				dis[ e[i].to ] = dis[ tmp.now ] + e[i].val;
+				if( vis[ e[i].to ] == false )
+					q.push( (que){e[i].to, dis[ e[i].to ]} );
 			}
-		}e[M << 1];
-		class Graph{
-			public:
-				int n;
-				struct node{
-					int dep, val;
-					int fa[20];
-				}nodes[N << 1];
-				struct edge{
-					int next, to, val;
-				}e[M << 1];
-				int ehead[N << 1], ecnt;
-				inline void add_edge(int now, int to, int val = 0);
-				inline void init();	
-				void get_st();
-		}G;
-		inline void add_edge(int now, int to, int val, int hei);
-		inline void get_pre(int n);
-		inline void init();
-		inline int build_tree(int n);
-}Tree;
-
-inline void kruskal_tree::Graph::init(){
-	ecnt = 0;
-	memset(ehead, 0, sizeof(ehead));
+		}
+	}
 }
+// dijkstra end
 
-inline void kruskal_tree::init(){
-	ecnt = 0;
-	G.init();
+// kurastra_tree start
+struct kurastra_edge{
+	int now, to, val;	
+}kurastra_e[N];
+void build_tree(){
+	std::sort(kurastra_e + 1, kurastra_e + m + 1);	
+	for(int i = 1; i <= m; i++){
+		
+	}	
 }
-
-inline void kruskal_tree::Graph::add_edge(int now, int to, int val){
-	ecnt++;
-	e[ecnt].to = to;
-	e[ecnt].next = ehead[now];
-	e[ecnt].val = val;
-	ehead[now] = ecnt;
-}
-
-inline void kruskal_tree::add_edge(int now, int to, int val, int hei){
-	e[++ecnt] = (edge_normal){now, to, val, hei};
-}
-
-inline void build_tree(int n){
-	G.init();
-	G.n = n;
-	std::sort(	
-}
-
-inline void kruskal_tree::get_pre(int n){
-	build_tree();	
-}
+// kurastra_tree end
 
 inline void init(){
-	Tree.init();	
-}
-
-void build_tree(){
-	G.init();
+	memset(ehead, 0, sizeof(ehead));	
 }
 
 void readin(){
-	scanf("%d%d", &n, &m);
+	scanf("%d%d", &n, &m); 
 	for(int i = 1; i <= m; i++){
-		scanf("%d%d%d%d", &u, &v, &l ,&a);	
-		Tree.add_edge(u, v, l, a);
-		Tree.G.add_edge(u, v, l);
+		scanf("%d%d%d%d", &u, &v, &l, &a);
 	}
 }
 
-inline void dijrstra(){
-	q.clear();
-	memset(dis, 0x3f, sizeof(dis));	
-	dis[1] = 0;q.push(
-}
-
 int main(){
-#ifdef woshiluo
-	freopen("luogu.5109.in", "r", stdin);
-	freopen("luogu.5109.out", "w", stdout);
-#endif
-#ifndef woshiluo
-	freopen("return.in", "r" , stdin);
-	freopen("return.out", "w", stdout);
-#endif	
 	scanf("%d", &T);
 	while(T--){
-		init();		
+		init();	
 		readin();
-		dijrstra();
-		Tree.get_pre(n);
+		dijkstra();
+		build_tree();
 	}
 }

@@ -12,7 +12,7 @@ long long ny[N], f[N];
 long long ksm(long long a,int b){
 	long long res=1;
 	while(b){
-		if(b&1) res =res * a % p;
+		if(b&1) res = res * a % p;
 		a = a * a %p;
 		b >>= 1;
 	}
