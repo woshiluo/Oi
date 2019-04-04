@@ -1,0 +1,7 @@
+#include <cstdio>
+
+int n, k;
+
+int main(){
+	
+}

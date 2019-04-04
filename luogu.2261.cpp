@@ -5,7 +5,7 @@ long long n, k, ans;
 long long dc(long long left, long long rig){
 	if(left == rig) 
 		return left;
-	return ( (left + rig) * (rig - left + 1) )>> 1;
+	return ( (left + rig) * (rig - left + 1) ) >> 1;
 }
 
 int main(){
