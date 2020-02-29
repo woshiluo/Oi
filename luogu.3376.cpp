@@ -1,140 +1,76 @@
 #include <cstdio>
-#include <cstring>
 
-inline int Min(int a,int b){return a<b?a:b;}
+int n, m;
 
-const int N=11000;
-const int M=110000;
+struct edge {
+	int to, next, flow;
+} e[ N << 1 ];
+int ehead[N], ecnt = 1;
 
-int n,m,s,t,u,v,w;
-
-// edge start
-struct edge{
-    int next,to,val,un;
-}e[M<<1];
-int ehead[N],ecnt;
-inline void add_edge(int now,int to,int val,int un){
-    ecnt++;
-    e[ecnt].to=to;
-    e[ecnt].val=val;
-    e[ecnt].next=ehead[now];
-    e[ecnt].un=ecnt+un;
-    ehead[now]=ecnt;
-}
-// edge end
-
-namespace Dinic{
-    int depth[N],rnow[N];
-    int q[N],head,tail;
-    inline bool bfs(){
-        memset(depth,0,sizeof(depth));
-        head=tail=0;
-        q[head]=s;
-        depth[s]=1;
-        while(head<=tail){
-            for(int i=ehead[q[head]];i;i=e[i].next){
-                if(e[i].val>0&&depth[e[i].to]==0){
-                    q[++tail]=e[i].to;
-                    depth[e[i].to]=depth[q[head]]+1;
-                }
-            }
-            head++;
-        }
-        if(depth[t]==0) return false;
-        else return true;
-    }
-
-    int dfs(int now,int dist){
-        if(now==t) return dist;
-        int fl=0,di;
-        for(int& i=rnow[now];i;i=e[i].next){
-            if(depth[e[i].to]==depth[now]+1&&e[i].val!=0){
-                di=dfs(e[i].to,Min(dist,e[i].val));
-                if(di>0){
-                    e[i].val-=di;
-                    e[e[i].un].val+=di;
-                    fl+=di;
-                    dist-=di;
-#include <cstdio>
-#include <cstring>
-
-inline int Min(int a,int b){return a<b?a:b;}
-
-const int N=11000;
-const int M=110000;
-
-int n,m,s,t,u,v,w;
-
-// edge start
-struct edge{
-    int next,to,val,un;
-}e[M<<1];
-int ehead[N],ecnt;
-inline void add_edge(int now,int to,int val,int un){
-    ecnt++;
-    e[ecnt].to=to;
-    e[ecnt].val=val;
-    e[ecnt].next=ehead[now];
-    e[ecnt].un=ecnt+un;
-    ehead[now]=ecnt;
-}
-// edge end
-
-namespace Dinic{
-    int depth[N],rnow[N];
-    int q[N],head,tail;
-    inline bool bfs(){
-        memset(depth,0,sizeof(depth));
-        head=tail=0;
-        q[head]=s;
-        depth[s]=1;
-        while(head<=tail){
-            for(int i=ehead[q[head]];i;i=e[i].next){
-                if(e[i].val>0&&depth[e[i].to]==0){
-                    q[++tail]=e[i].to;
-                    depth[e[i].to]=depth[q[head]]+1;
-                }
-            }
-            head++;
-        }
-        if(depth[t]==0) return false;
-        else return true;
-    }
-
-    int dfs(int now,int dist){
-        if(now==t) return dist;
-        int fl=0,di;
-        for(int& i=rnow[now];i;i=e[i].next){
-            if(depth[e[i].to]==depth[now]+1&&e[i].val!=0){
-                di=dfs(e[i].to,Min(dist,e[i].val));
-                if(di>0){
-                    e[i].val-=di;
-                    e[e[i].un].val+=di;
-                    fl+=di;
-                    dist-=di;
-                    if(!dist) break;
-                }
-            }
-        }
-        return fl;
-    }
-    inline int dinic(){
-        int ans=0;
-        while(bfs()){
-            for(int i=1;i<=n;i++) rnow[i]=ehead[i];
-            while(int d=dfs(s,0x7fffffff)) ans+=d;
-        }
-        return ans;
-    }
+inline void add_edge( int now, int to, int flow ) {
+	ecnt ++;
+	e[ecnt].to = to;
+	e[ecnt].flow = floe;
+	e[ecnt].next = ehead[now];
+	ehead[now] = ecnt;
 }
 
+namespace Dinic {
+	int S, T;
+	int q[N], head, tail;
+	bool bfs( int S, int T ) {
+		memset( dep, 0, sizeof( dep ) );
+		head = tail = 0;
+		q[head] = 0; dep[S] = 1;
+		while( head <= tail ) {
+			int top = q[head];
+			for( int i = ehead[top]; i; i = e[i].next ) {
+				if( e[i].flow != 0 && dep[top] == 0 ) {
+					dep[ e[i].to ] = dep[top] + 1;
+					q[ ++ tail ] = e[i].to;
+				}
+			}
+			head ++;
+		}
+		return dep[T] != 0;
+	}
+	void init_cache_head() {
+		for( int i = 1; i <= n; i ++ ) 
+			cache_head[i] = head[i];
+	}
+	int dfs( int now, int dist ) {
+		if( now == T ) 
+			return dist;
+		int res = 0;
+		for( int &i = cache_head[now]; i; i = e[i].next ) {
+			if( e[i].flow != 0 && dep[ e[i].to ] == dep[now] + 1 ) {
+				int flow = Min( dist, e[i].flow );
+				e[ i ^ 1 ].flow -= flow;
+				e[i].flow += flow;
+				dist -= flow;
+				res += dfs( e[i].to, flow );
+			}
+			if( dist == 0 ) 
+				break;
+		}
+		return res;
+	}
+	int dinic() {
+		int res = 0;
+		while( bfs( S, T ) ) {
+			init_cache_head();
+			while( int d = dfs( S ) ) 
+				res += d;
+		}
+		return res;
+	}
+}
 
-int main(){
-    scanf("%d%d%d%d",&n,&m,&s,&t);
-    for(int i=1;i<=m;i++){
-        scanf("%d%d%d",&u,&v,&w);
-        add_edge(u,v,w,1);
-        add_edge(v,u,0,-1);
-    }
-    printf("%d",Dinic::dinic());
+int main() {
+	scanf( "%d%d%d%d", &n, &m, &Dinic::S, &Dinic::T );
+	for( int i = 1, u, v, w; i <= n; i ++ ) {
+		scanf( "%d%d%d", &u, &v, &w );
+		add_edge( u, v, w );
+		add_edge
+	}
 }
