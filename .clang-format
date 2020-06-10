@@ -1,0 +1,16 @@
+BasedOnStyle: LLVM
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: false
+AlwaysBreakTemplateDeclarations: true
+BreakBeforeBraces: Attach
+ColumnLimit: 120    # 每行最多显示120个字符
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: false
+NamespaceIndentationKind: All
+PointerAlignment: Right
+SpaceAfterTemplateKeyword: true
+SpacesInSquareBrackets: true
+SpacesInParentheses : true
+Standard: Cpp11
+TabWidth: 4
+UseTab: Always
