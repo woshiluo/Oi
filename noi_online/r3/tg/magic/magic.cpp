@@ -14,40 +14,40 @@ void chk_Min( T &a, T b ) { if( a > b ) a = b; }
 template<class T>
 void chk_Max( T &a, T b ) { if( a < b ) a = b; }
 
-const int N = 110;
+const unsigned int N = 110;
 
-int n, m, q;
+unsigned int n, m, q;
 bool con[N][N];
 
 namespace sub1{ 
 	struct _ask {
-		int cur, id;
+		unsigned int cur, id;
 		bool operator< ( _ask b ) { return cur < b.cur; }
 	} ask[N];
 
-	int f[N][2], ans[N];
+	unsigned int f[N][2], ans[N];
 
 	void calc(){
-		for( int i = 1; i <= n; i ++ ) {
-			scanf( "%d", &f[i][0] );
+		for( unsigned int i = 1; i <= n; i ++ ) {
+			scanf( "%u", &f[i][0] );
 		}
 		while( m -- ) {
-			int x, y;
-			scanf( "%d%d", &x, &y );
+			unsigned int x, y;
+			scanf( "%u%u", &x, &y );
 			con[x][y] = true;
 		}
-		for( int i = 1; i <= q; i ++ ) {
-			scanf( "%d", &ask[i].cur );
+		for( unsigned int i = 1; i <= q; i ++ ) {
+			scanf( "%u", &ask[i].cur );
 			ask[i].id = i;
 		}
 
 		std::sort( ask + 1, ask + 1 + q );
-		int end = ask[q].cur;
-		int cur = 1, la = 0, p1 = 1;
-		for( int o = 1; o <= end; o ++, la ^= 1, cur ^= 1 ) {
-			for( int i = 1; i <= n; i ++ ) {
+		unsigned int end = ask[q].cur;
+		unsigned int cur = 1, la = 0, p1 = 1;
+		for( unsigned int o = 1; o <= end; o ++, la ^= 1, cur ^= 1 ) {
+			for( unsigned int i = 1; i <= n; i ++ ) {
 				f[i][cur] = 0;
-				for( int j = 1; j <= n; j ++ ) {
+				for( unsigned int j = 1; j <= n; j ++ ) {
 					if( con[i][j] )
 						f[i][cur] ^= f[j][la];
 				}
@@ -58,46 +58,46 @@ namespace sub1{
 			}
 		}
 
-		for( int i = 1; i <= q; i ++ ) {
-			printf( "%d\n", ans[i] );
+		for( unsigned int i = 1; i <= q; i ++ ) {
+			printf( "%u\n", ans[i] );
 		}
 	}
 }
 
 namespace sub3 {
-	int f[N];
+	unsigned int f[N];
 	void calc() {
-		for( int i = 1; i <= n; i ++ ) {
-			scanf( "%d", &f[i] );
+		for( unsigned int i = 1; i <= n; i ++ ) {
+			scanf( "%u", &f[i] );
 		}
 		while( m -- ) {
-			int x, y;
-			scanf( "%d%d", &x, &y );
+			unsigned int x, y;
+			scanf( "%u%u", &x, &y );
 		}
 
-		int ans = f[2];
-		for( int i = 3; i <= n; i ++ ) 
+		unsigned int ans = f[2];
+		for( unsigned int i = 3; i <= n; i ++ ) 
 			ans ^= f[i];
 		while( q -- ) {
-			int ai;
-			scanf( "%d", &ai );
+			unsigned int ai;
+			scanf( "%u", &ai );
 			if( ( n - 1 ) % 2 == 1 ) {
 				if( ai % 2 == 1 ) 
-					printf( "%d\n", ans );
+					printf( "%u\n", ans );
 				else 
-					printf( "%d\n", f[1] );
+					printf( "%u\n", f[1] );
 			}
 			else 
-				printf( "%d\n", ans );
+				printf( "%u\n", ans );
 		}
 	}
 }
 
 int main() {
-//	freopen( "magic.in", "r", stdin );
-//	freopen( "magic.out", "w", stdout );
+	freopen( "magic.in", "r", stdin );
+	freopen( "magic.out", "w", stdout );
 
-	scanf( "%d%d%d", &n, &m, &q );
+	scanf( "%u%u%u", &n, &m, &q );
 
 	if( m == n * ( n - 1 ) / 2 ) 
 		sub3::calc();

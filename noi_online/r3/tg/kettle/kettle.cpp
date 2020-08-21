@@ -20,8 +20,8 @@ int n, k;
 int a[N];
 
 int main() {
-//	freopen( "kettle.in", "r", stdin );
-//	freopen( "kettle.out", "w", stdout );
+	freopen( "kettle.in", "r", stdin );
+	freopen( "kettle.out", "w", stdout );
 
 	scanf( "%d%d", &n, &k );
 	k ++;

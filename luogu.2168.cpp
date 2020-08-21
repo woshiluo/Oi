@@ -5,14 +5,14 @@
 struct node {
 	int dep;
 	long long cur, cnt;
-	node( int _dep = 0, int _cur = 0, int _cnt = 0 ) { dep = _dep; cur = _cur; cnt = _cnt; }
-	bool operator< ( const node &b ) const { return ( this -> cur == b.cur )? this -> dep > b.dep: this -> cnt > b.cnt; }
+	node( int _dep = 0, long long _cur = 0, long long _cnt = 0 ) { dep = _dep; cur = _cur; cnt = _cnt; }
+	bool operator< ( const node &b ) const { return ( this -> cur == b.cur )? this -> dep > b.dep: this -> cur > b.cur; }
 };
 
 int n, k;
 std::priority_queue<node> q;
 
-inline int Max( int a, int b ) { return a > b? a: b; }
+inline long long Max( long long a, long long b ) { return a > b? a: b; }
 
 int main() {
 #ifdef woshiluo
@@ -20,8 +20,9 @@ int main() {
 	freopen( "luogu.2168.out", "w", stdout );
 #endif
 	scanf( "%d%d", &n, &k );
-	for( int i = 1, tmp; i <= n; i ++ ) {
-		scanf( "%d", &tmp );
+	for( int i = 1; i <= n; i ++ ) {
+		long long tmp;
+		scanf( "%lld", &tmp );
 		q.push( (node){ 0, tmp, tmp } );
 	}
 	long long ans = 0;

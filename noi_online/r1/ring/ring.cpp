@@ -1,8 +1,3 @@
-#include <cstdio>
-
-#include <algorithm>
-
-const int N = 2e5 + 1e4;
 
 int n, m;
 int a[N], b[N];

@@ -26,7 +26,7 @@ void get_sa(){
 	}
 	sort();
 	
-	for(int l = 1, tmp_cnt; tmp_cnt < len; l <<= 1, Max_char = tmp_cnt){
+	for(int l = 1, tmp_cnt = 0; tmp_cnt < len; l <<= 1, Max_char = tmp_cnt){
 		tmp_cnt = 0;
 		for(int i = 1; i <= l; i++)
 			tp[ ++ tmp_cnt ] = len - l + i;
