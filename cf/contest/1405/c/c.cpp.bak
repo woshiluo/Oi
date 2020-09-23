@@ -1,0 +1,88 @@
+// Woshiluo<woshiluo@woshiluo.site>
+// 2020/09/06 23:12:01 
+// Blog: https://blog.woshiluo.com
+
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#include <algorithm>
+
+template <class T> 
+T Max( T a, T b ) { return a > b? a: b; }
+template <class T> 
+T Min( T a, T b ) { return a < b? a: b; }
+template <class T> 
+void chk_Max( T &a, T b ) { if( b > a ) a = b; }
+template <class T> 
+void chk_Min( T &a, T b ) { if( b < a ) a = b; }
+
+const int N = 3e5 + 1e4;
+
+struct node { int one, zero; } need[N];
+
+int T;
+int n, k;
+
+int main() {
+	scanf( "%d", &T );
+	while( T -- ) {
+		scanf( "%d%d", &n, &k );
+		char str[N]; std::vector<int> pos[n + 10];
+		scanf( "%s", str );
+		int zero = 0, one = 0;
+		int head = 0, tail = 0; int q[N];
+		for( int i = 0; i < n; i ++ ) {
+			if( str[i] == '1' ) {
+				one ++;
+			}
+			else if( str[i] == '0' ) {
+				zero ++;
+			}
+			else {
+				q[tail] = i;
+				tail ++;
+			}
+
+			if( i >= ( k - 1 ) ) { 
+				int la = i - k;
+				if( la >= 0 ) {
+					if( str[la] == '1' ) {
+						one --;
+					}
+					else if( str[la] == '0' ) {
+						zero --;
+					}
+					else {
+						head ++;
+					}
+				}
+
+				for( int i = head; i < tail; i ++ ) {
+					pos[ q[i] ].push(i);
+				}
+				need[i] = (node){ ( k / 2 ) - one, ( k / 2 ) - zero };
+			}
+
+			bool flag = true;
+			for( int i = 0; i < n; i  ++ ) {
+				int size = pos[i].size();
+				if( size != 0 ) {
+					bool flag_0 = true, flag_1 = true;
+					for( int j = 0; j < size; j ++ ) {
+						if( need[j].one == 0 ) 
+							flag_1 = false;
+						if( need[j].zero == 0 ) 
+							flag_0 = false;
+					}
+				}
+				if( flag_1 == false && flag_0 == false ) {
+					flag = false;
+					break;
+				}
+				else {
+				}
+			}
+		}
+	}
+}
