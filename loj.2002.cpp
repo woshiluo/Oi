@@ -3,66 +3,108 @@
 
 #include <vector>
 
-const int P = 110;
-const int M = 2e7 + 1e6;
+#define printdebug
+
 const int mod = 20170408;
+const int M = 2e7 + 1e6;
+const int P = 110;
 
-inline int add( int a, int b ) { return ( a + b ) % mod; }
-inline int mul( int a, int b ) { return ( 1LL * a * b ) % mod; }
+inline int aabs( int a ) { return a < 0? -a: a; }
 
-int n, m, p;
+struct Modint {
+	int cur;
+	Modint( int _cur = 0 ) { cur = ( ( _cur % mod ) + mod ) % mod; }
+
+	Modint operator+ ( const Modint &b ) const {
+		return ( cur + b.cur ) % mod;
+	}
+	Modint operator- ( const Modint &b ) const {
+		return ( Modint(cur) + Modint( - b.cur ) );
+	}
+	Modint operator* ( const Modint &b ) const {
+		return ( 1LL * cur * b.cur ) % mod;
+	}
+	void operator+= ( const Modint &b ) {
+		cur += b.cur;
+		if( cur >= mod ) 
+			cur -= mod;
+	}
+	void operator*= ( const Modint &b ) {
+		cur = ( 1LL * cur * b.cur ) % mod;
+	}
+	void output( const char x = '\n' ) {
+		printf( "%d%c", cur, x );
+	}
+};
 
 struct Matrix {
-	int val[P][P];
-	Matrix( int cur = 1 ) {
+	Modint val[P][P];
+	Matrix( int def = 0 ) {
 		memset( val, 0, sizeof(val) );
-		if( cur != 0 ) {
-			for( int i = 1; i <= 100; i ++ ) 
-				val[i][i] = cur;
+		if( def != 0 ) {
+			for( int i = 0; i < P; i ++ )
+				val[i][i] = def;
 		}
 	}
-	Matrix operator* ( Matrix _b ) {
-		Matrix res(0);
-		for( int i = 1; i <= 100; i ++ ) {
-			for( int j = 1; j <= 100; j ++ ) {
-				for( int k = 1; k <= 100; k ++ ) {
-					res.val[i][j] = add( res.val[i][j], mul( val[i][k], _b.val[k][j] ) );
+	Matrix operator* ( const Matrix &b ) const {
+		Matrix res = 0;
+		for( int i = 0; i < P; i ++ ) {
+			for( int j = 0; j < P; j ++ ) {
+				for( int k = 0; k < P; k ++ ) {
+					res.val[i][k] += val[i][j] * b.val[j][k];
 				}
 			}
 		}
 		return res;
+	} 
+	void operator*= ( const Matrix &b ) {
+		(*this) = (*this) * b;
+	}
+
+	void debug( int p ) {
+#ifdef woshiluo 
+#ifdef printdebug
+		for( int i = 0; i < p; i ++ ) {
+			for( int j = 0; j < p; j ++ ) {
+				val[i][j].output(' ');
+			}
+			printf( "\n" );
+		}
+			printf( "\n" );
+#endif
+#endif
 	}
 };
 
-bool is_prime[M];
-std::vector<int> prime;
-void pre( int cur ) {
-	memset( is_prime, true, sizeof(is_prime) );
-	is_prime[1] = false;
-	for( int i = 2; i <= cur; i ++ ) {
-		if( is_prime[i] ) {
-			prime.push_back(i);
-		}
-		for( auto pri: prime ) {
-			if( 1LL * pri * i > cur ) 
-				break;
-			int nxt = pri * i;
-			is_prime[nxt] = false;
-			if( i % pri == 0 ) 
-				break;
-		}
-	}
-}
-
-Matrix ksm( Matrix a, int p ) {
-	Matrix res;
-	while( p ) {
+Matrix pow( Matrix a, int p ) {
+	Matrix res = 1;
+	while( p ) { 
 		if( p & 1 ) 
-			res = a * res;
-		a = a * a;
+			res *= a;
+		a *= a;
 		p >>= 1;
 	}
 	return res;
+}
+
+std::vector<int> prime;
+bool is_prime[M];
+
+void pre( int n ) {
+	memset( is_prime, true, sizeof(is_prime) );
+	is_prime[0] = is_prime[1] = false;
+	for( int i = 2; i <= n; i ++ ) {
+		if( is_prime[i] ) {
+			prime.push_back(i); 
+		}
+		for( auto x: prime ) {
+			if( 1LL * x * i > n )
+				break;
+			is_prime[ x * i ] = false;
+			if( i % x == 0 ) 
+				break;
+		}
+	}
 }
 
 int main() {
@@ -70,27 +112,29 @@ int main() {
 	freopen( "loj.2002.in", "r", stdin );
 	freopen( "loj.2002.out", "w", stdout );
 #endif
+	Matrix a, b, c, d;
+	int n, m, p;
 	scanf( "%d%d%d", &n, &m, &p );
-	Matrix meta(0), fst(0);
 	pre(m);
-	for( int i = 1; i <= p; i ++ ) {
-		meta.val[1][i] = ( m + ( i - 1 ) ) / p;
+	//const int base = p;
+	for( int i = 0; i < p; i ++ ) {
+		for( int j = 0; j < p; j ++ ) {
+			int st = ( j - i + p ) % p;
+			if( st == 0 ) 
+				st = p;
+			int val = ( m - st ) / p + 1;
+			if( m - st < 0 ) val = 0;
+			a.val[i][j] = b.val[i][j] = val;
+		}
 	}
-	for( int i = 2; i <= p; i ++ ) {
-		for( int j = 1; j <= p; j ++ ) {
-			int la = j - 1;
-			if( la == 0 )
-				la = p;
-			meta.val[i][j] = meta.val[ i - 1 ][la];
+	for( auto x: prime ) {
+		for( int i = 0; i < p; i ++ ) {
+			b.val[i][ ( i + x ) % p ] += -1;
 		}
 	}
 
-	for( auto pri: prime ) {
-		fst.val[1][ ( pri % p ) + 1 ] = 1;
-		//fst.val[ ( pri % p ) + 1 ][1] = 1;
-	}
+	c.val[0][0] = 1;
+	d.val[0][0] = 1;
 
-	Matrix res = fst * ksm( meta, n - 1 );
-
-	printf( "%d\n", res.val[1][p] );
+	( ( c * pow( a, n ) ).val[0][0] - ( d * pow( b, n ) ).val[0][0] ).output();
 }
