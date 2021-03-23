@@ -5,8 +5,8 @@ int n;
 
 int main(){
 	system( "g++ gen.cpp -o gen.run -O2 -g -lm -std=c++17 -Wall -Wextra" );
-	system( "g++ luogu.3960.cpp -o mine.run -g -lm -O2 -std=c++17 -Wall -Wextra" );
-	system( "g++ bf.cpp -o dalao.run -g -lm -O2 -std=c++03 -Wall -Wextra" );
+	system( "g++ luogu.t170812.cpp -o mine.run -g -lm -O2 -std=c++17 -Wall -Wextra" );
+	system( "g++ dalao.cpp -o dalao.run -g -lm -O2 -std=c++03 -Wall -Wextra" );
 	while(1){
 		n++;
 		system("./gen.run >t.in");

@@ -36,7 +36,7 @@ inline void add_edge( int cur, int to ) {
 }
 // Edge End
 
-int size[N], mson[N], dep[N];/*{{{*/
+int size[N], mson[N], dep[N];
 
 void dfs1( int cur, int la ) {
 	size[cur] = 1; dep[cur] = dep[la] + 1;
@@ -110,7 +110,7 @@ void push_up( int cur, int la ) {
 		push_up( to, cur );
 		chk_Max( ans[cur], ans[to] );
 	}
-}/*}}}*/
+}
 
 int main() {
 #ifdef woshiluo
