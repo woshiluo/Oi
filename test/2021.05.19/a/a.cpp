@@ -14,7 +14,6 @@ class pow( T a, int p ) {
 	return res;
 }
 
-
 struct ModInt {
 	int cur;
 	ModInt( int _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
@@ -28,7 +27,6 @@ struct ModInt {
 	inline void operator-= ( const ModInt &b ) const { cur = ( ( ( cur - b.cur ) % mod ) + mod ) % mod; }
 	inline void operator*= ( const ModInt &b ) const { cur = ( 1LL * cur * b.cur ) % mod; }
 	inline void operator/= ( const ModInt &b ) const { cur = ( 1LL * cur * pow( b, mod - 2 ).cur ) % mod; }
-
 };
 
 struct Edge {

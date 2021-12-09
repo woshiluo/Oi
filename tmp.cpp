@@ -1,77 +1,60 @@
-// 作者：小黑 AWM
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#define maxn 2018
-#define maxm 4000400
+#include<bits/stdc++.h>
 using namespace std;
-int Index, instack[maxn], DFN[maxn], LOW[maxn];
-int tot, color[maxn];
-int numedge, head[maxn];
-struct Edge {
-	int nxt, to;
-} edge[maxm];
-int sta[maxn], top;
-int n, m;
-void add(int x, int y) {
-	edge[++numedge].to = y;
-	edge[numedge].nxt = head[x];
-	head[x] = numedge;
-}
-void tarjan(int x) {  // 缩点看不懂请移步强连通分量上面有一个链接可以点。
-	sta[++top] = x;
-	instack[x] = 1;
-	DFN[x] = LOW[x] = ++Index;
-	for (int i = head[x]; i; i = edge[i].nxt) {
-		int v = edge[i].to;
-		if (!DFN[v]) {
-			tarjan(v);
-			LOW[x] = min(LOW[x], LOW[v]);
-		} else if (instack[v])
-			LOW[x] = min(LOW[x], DFN[v]);
+inline int readint(){
+	int x=0;
+	bool f=0;
+	char c=getchar();
+	while(!isdigit(c)&&c!='-') c=getchar();
+	if(c=='-'){
+		f=1;
+		c=getchar();
 	}
-	if (DFN[x] == LOW[x]) {
-		tot++;
-		do {
-			color[sta[top]] = tot;  // 染色
-			instack[sta[top]] = 0;
-		} while (sta[top--] != x);
+	while(isdigit(c)){
+		x=x*10+c-'0';
+		c=getchar();
 	}
+	return f?-x:x;
 }
-bool solve() {
-	for (int i = 0; i < 2 * n; i++)
-		if (!DFN[i]) tarjan(i);
-	for (int i = 0; i < 2 * n; i += 2)
-		if (color[i] == color[i + 1]) return 0;
-	return 1;
-}
-void init() {
-	top = 0;
-	tot = 0;
-	Index = 0;
-	numedge = 0;
-	memset(sta, 0, sizeof(sta));
-	memset(DFN, 0, sizeof(DFN));
-	memset(instack, 0, sizeof(instack));
-	memset(LOW, 0, sizeof(LOW));
-	memset(color, 0, sizeof(color));
-	memset(head, 0, sizeof(head));
-}
-int main() {
-	while (~scanf("%d%d", &n, &m)) {
-		init();
-		for (int i = 1; i <= m; i++) {
-			int a1, a2, c1, c2;
-			scanf("%d%d%d%d", &a1, &a2, &c1, &c2);  // 自己做的时候别用 cin 会被卡
-			add(2 * a1 + c1, 2 * a2 + 1 - c2);
-			// 对于第 i 对夫妇，我们用 2i+1 表示丈夫，2i 表示妻子。
-			add(2 * a2 + c2, 2 * a1 + 1 - c1);
+typedef long long ll;
+const int maxn=500+5;
+int n;
+ll p;
+const int pr[]={2,3,5,7,11,13,17,19},m=256;
+ll dp[m][m],f1[2][m][m],f2[2][m][m];
+int d[maxn],ord[maxn],t[maxn];
+int main(){
+	#ifdef LOCAL
+	freopen("in.txt","r",stdin);
+	freopen("out.txt","w",stdout);
+	#endif
+	n=readint();
+	p=readint();
+	for(int i=2;i<=n;i++){
+		d[i]=i;
+		for(int j=0;j<8;j++) if(d[i]%pr[j]==0){
+			t[i]|=1<<j;
+			while(d[i]%pr[j]==0) d[i]/=pr[j];
 		}
-		if (solve())
-			printf("YES\n");
-		else
-			printf("NO\n");
 	}
+	for(int i=2;i<=n;i++) ord[i]=i;
+	sort(ord+2,ord+n+1,[](int a,int b){
+		return d[a]<d[b];
+	});
+	for(int i=0;i<m;i++) for(int j=0;j<m;j++)
+		if(!(i&j)) f1[1][i][j]=f2[1][i][j]=dp[i][j]=1%p;
+	for(int i=2;i<=n;i++){
+		for(int j=0;j<m;j++) for(int k=0;k<m;k++) if(!(j&k)){
+			f1[i%2][j][k]=f1[(i-1)%2][j][k];
+			if(!(k&t[ord[i]]))
+				f1[i%2][j][k]=(f1[i%2][j][k]+f1[(i-1)%2][j|t[ord[i]]][k])%p;
+			f2[i%2][j][k]=f2[(i-1)%2][j][k];
+			if(!(j&t[ord[i]]))
+				f2[i%2][j][k]=(f2[i%2][j][k]+f2[(i-1)%2][j][k|t[ord[i]]])%p;
+		}
+		if(i==n||d[ord[i]]==1||d[ord[i+1]]!=d[ord[i]])
+			for(int j=0;j<m;j++) for(int k=0;k<m;k++) if(!(j&k))
+				f1[i%2][j][k]=f2[i%2][j][k]=dp[j][k]=(f1[i%2][j][k]+f2[i%2][j][k]-dp[j][k]+p)%p;
+	}
+	printf("%lld\n",dp[0][0]);
 	return 0;
 }

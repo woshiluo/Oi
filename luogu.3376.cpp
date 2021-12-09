@@ -1,76 +1,114 @@
 #include <cstdio>
+#include <cstring>
 
-int n, m;
+#include <queue>
 
-struct edge {
+template <class T>/*{{{*/
+T Min( T a, T b ) { return a < b? a: b; }
+template <class T>
+T Max( T a, T b ) { return a > b? a: b; }
+template <class T>
+T chk_Min( T &a, T b ) { if( a > b ) a = b; }
+template <class T>
+T chk_Max( T &a, T b ) { if( a < b ) a = b; }
+
+inline bool is_digit( const char cur ) { return cur >= '0' && cur <= '9'; }
+template <class T>
+T read() {
+	T res = 0, k = 1; char x = getchar();
+	for( ; !is_digit(x); x = getchar() ) 
+		if( x == '-' ) 
+			k = -1;
+	for( ; is_digit(x); x = getchar() ) 
+		res = res * 10 + ( x - '0' );
+	return res * k;
+}/*}}}*/
+
+typedef long long ll;
+typedef unsigned long long ull;
+
+const int N = 210;
+const int M = 5100;
+const ll LLM = 0x3f3f3f3f3f3f3f3f;
+
+int n, m, s, t;
+
+struct Edge {/*{{{*/
 	int to, next, flow;
-} e[ N << 1 ];
+} e[ M << 1 ];
 int ehead[N], ecnt = 1;
-
-inline void add_edge( int now, int to, int flow ) {
+int thead[N];
+inline void add_edge( int cur, int to, int flow ) {
 	ecnt ++;
 	e[ecnt].to = to;
-	e[ecnt].flow = floe;
-	e[ecnt].next = ehead[now];
-	ehead[now] = ecnt;
-}
+	e[ecnt].next = ehead[cur];
+	e[ecnt].flow = flow;
+	ehead[cur] = ecnt;
+}/*}}}*/
 
 namespace Dinic {
-	int S, T;
-	int q[N], head, tail;
-	bool bfs( int S, int T ) {
-		memset( dep, 0, sizeof( dep ) );
-		head = tail = 0;
-		q[head] = 0; dep[S] = 1;
-		while( head <= tail ) {
-			int top = q[head];
-			for( int i = ehead[top]; i; i = e[i].next ) {
-				if( e[i].flow != 0 && dep[top] == 0 ) {
-					dep[ e[i].to ] = dep[top] + 1;
-					q[ ++ tail ] = e[i].to;
-				}
+	int st, ed;
+	int dep[N];
+	bool bfs() {
+		memset( dep, -1, sizeof(dep) );
+		dep[st] = 0;
+		std::queue<int> q;
+		q.push(st);
+		while( !q.empty() ) {
+			int cur = q.front(); q.pop();
+			for( int i = ehead[cur]; i; i = e[i].next ) {
+				if( e[i].flow == 0 ) 
+					continue;
+				int to = e[i].to;
+				if( dep[to] != -1 ) 
+					continue;
+				dep[to] = dep[cur] + 1;
+				q.push(to);
 			}
-			head ++;
 		}
-		return dep[T] != 0;
+		return dep[ed] != -1;
 	}
-	void init_cache_head() {
-		for( int i = 1; i <= n; i ++ ) 
-			cache_head[i] = head[i];
-	}
-	int dfs( int now, int dist ) {
-		if( now == T ) 
-			return dist;
-		int res = 0;
-		for( int &i = cache_head[now]; i; i = e[i].next ) {
-			if( e[i].flow != 0 && dep[ e[i].to ] == dep[now] + 1 ) {
-				int flow = Min( dist, e[i].flow );
-				e[ i ^ 1 ].flow -= flow;
-				e[i].flow += flow;
-				dist -= flow;
-				res += dfs( e[i].to, flow );
-			}
-			if( dist == 0 ) 
+	ll dfs( int cur, ll flow ) {
+		if( cur == ed ) 
+			return flow;
+		ll res = 0;
+		for( int &i = thead[cur]; i; i = e[i].next ) {
+			if( !flow ) 
 				break;
+			if( e[i].flow && dep[ e[i].to ] == dep[cur] + 1 ) {
+				ll cur_flow = dfs( e[i].to, Min( flow, (ll)e[i].flow ) );
+				res += cur_flow;
+				e[i].flow -= cur_flow;
+				e[ i ^ 1 ].flow += cur_flow;
+				flow -= cur_flow;
+			}
 		}
 		return res;
 	}
-	int dinic() {
-		int res = 0;
-		while( bfs( S, T ) ) {
-			init_cache_head();
-			while( int d = dfs( S ) ) 
-				res += d;
+	ll dinic( int _st, int _ed ) {
+		st = _st; ed = _ed;
+		ll res = 0;
+		while( bfs() ) {
+			// TODO: CHECK
+			memcpy( thead, ehead, sizeof(ehead) );
+			ll tmp = dfs( st, LLM );
+			res += tmp;
 		}
 		return res;
 	}
 }
 
 int main() {
-	scanf( "%d%d%d%d", &n, &m, &Dinic::S, &Dinic::T );
-	for( int i = 1, u, v, w; i <= n; i ++ ) {
-		scanf( "%d%d%d", &u, &v, &w );
+#ifdef woshiluo
+	freopen( "luogu.3376.in", "r", stdin );
+	freopen( "luogu.3376.out", "w", stdout );
+#endif
+	n = read<int>(); m = read<int>(); s = read<int>(); t = read<int>();
+	for( int i = 1; i <= m; i ++ ) {
+		int u, v, w;
+		u = read<int>(); v = read<int>(); w = read<int>();
 		add_edge( u, v, w );
-		add_edge
+		add_edge( v, u, 0 );
 	}
+	printf( "%lld", Dinic::dinic( s, t ) );
 }
