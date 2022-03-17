@@ -1,60 +1,61 @@
-#include<bits/stdc++.h>
-using namespace std;
-inline int readint(){
-	int x=0;
-	bool f=0;
-	char c=getchar();
-	while(!isdigit(c)&&c!='-') c=getchar();
-	if(c=='-'){
-		f=1;
-		c=getchar();
-	}
-	while(isdigit(c)){
-		x=x*10+c-'0';
-		c=getchar();
-	}
-	return f?-x:x;
-}
+#include <cstdio>
+#include <algorithm>
 typedef long long ll;
-const int maxn=500+5;
-int n;
-ll p;
-const int pr[]={2,3,5,7,11,13,17,19},m=256;
-ll dp[m][m],f1[2][m][m],f2[2][m][m];
-int d[maxn],ord[maxn],t[maxn];
-int main(){
-	#ifdef LOCAL
-	freopen("in.txt","r",stdin);
-	freopen("out.txt","w",stdout);
-	#endif
-	n=readint();
-	p=readint();
-	for(int i=2;i<=n;i++){
-		d[i]=i;
-		for(int j=0;j<8;j++) if(d[i]%pr[j]==0){
-			t[i]|=1<<j;
-			while(d[i]%pr[j]==0) d[i]/=pr[j];
-		}
-	}
-	for(int i=2;i<=n;i++) ord[i]=i;
-	sort(ord+2,ord+n+1,[](int a,int b){
-		return d[a]<d[b];
-	});
-	for(int i=0;i<m;i++) for(int j=0;j<m;j++)
-		if(!(i&j)) f1[1][i][j]=f2[1][i][j]=dp[i][j]=1%p;
-	for(int i=2;i<=n;i++){
-		for(int j=0;j<m;j++) for(int k=0;k<m;k++) if(!(j&k)){
-			f1[i%2][j][k]=f1[(i-1)%2][j][k];
-			if(!(k&t[ord[i]]))
-				f1[i%2][j][k]=(f1[i%2][j][k]+f1[(i-1)%2][j|t[ord[i]]][k])%p;
-			f2[i%2][j][k]=f2[(i-1)%2][j][k];
-			if(!(j&t[ord[i]]))
-				f2[i%2][j][k]=(f2[i%2][j][k]+f2[(i-1)%2][j][k|t[ord[i]]])%p;
-		}
-		if(i==n||d[ord[i]]==1||d[ord[i+1]]!=d[ord[i]])
-			for(int j=0;j<m;j++) for(int k=0;k<m;k++) if(!(j&k))
-				f1[i%2][j][k]=f2[i%2][j][k]=dp[j][k]=(f1[i%2][j][k]+f2[i%2][j][k]-dp[j][k]+p)%p;
-	}
-	printf("%lld\n",dp[0][0]);
-	return 0;
+const int N = 10000007;
+ll gcd(ll a, ll b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+inline ll lcm(ll a, ll b) {
+    return a / gcd(a, b) * b;
+}
+
+struct edge {
+    int s, t;
+    ll l;
+    edge():s(0), t(0), l(0) {}
+    edge(int s, int t, ll l):s(s), t(t), l(l) {}
+    bool operator<(const edge& b) {
+        return l < b.l;
+    }
+}e[N];
+
+int fa[N], e_tot;
+int find(int x) {
+    return x == fa[x] ? x : x = find(fa[x]);
+}
+void merge(int a, int b) {
+    fa[find(a)] = find(b);
+}
+
+ll kruskal(int n) {
+    for (int i = 1; i <= n; ++i) {
+        fa[i] = i;
+    }
+    ll ret = 0;
+    std::sort(e + 1, e + e_tot + 1);
+    for (int i = 1, left = n - 1; left && i <= e_tot; ++i) {
+        if (find(e[i].s) == find(e[i].t)) {
+            continue;
+        }
+//		printf( "%d %d %lld\n", e[i].s, e[i].t, e[i].l );
+        ret += e[i].l;
+        merge(e[i].s, e[i].t);
+        --left;
+    }
+    return ret;
+}
+
+int main() {
+	freopen( "tmp.in", "r", stdin );
+	freopen( "tmp.out", "w", stdout );
+
+    int l, r;
+    scanf("%d%d", &l, &r);
+    for (int i = l; i <= r; ++i) {
+        for (int j = i + 1; j <= r; ++j) {
+            e[++e_tot] = edge(i - l + 1, j - l + 1, lcm(i, j));
+        }
+    }
+    printf("%lld", kruskal(r - l + 1));
+    return 0;
 }

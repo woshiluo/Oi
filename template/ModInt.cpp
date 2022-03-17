@@ -1,6 +1,6 @@
 struct ModInt {/*{{{*/
 	int cur;
-	ModInt( int _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
+	ModInt( ll _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
 
 	inline ModInt operator+ ( const ModInt &b ) const { return ( cur + b.cur ) % mod; }
 	inline ModInt operator- ( const ModInt &b ) const { return ( ( ( cur - b.cur ) % mod ) + mod ) % mod; }

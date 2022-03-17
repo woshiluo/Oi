@@ -1,0 +1,90 @@
+/*
+ * test.cpp
+ * Copyright (C) 2021 Woshiluo Luo <woshiluo.luo@outlook.com>
+ *
+ * 「Two roads diverged in a wood,and I—
+ * I took the one less traveled by,
+ * And that has made all the difference.」
+ *
+ * Distributed under terms of the GNU AGPLv3+ license.
+ */
+
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#include <map>
+#include <algorithm>
+
+typedef long long ll;
+typedef unsigned long long ull;
+
+inline bool isdigit( const char cur ) { return cur >= '0' && cur <= '9'; }/*{{{*/
+template <class T> 
+T Max( T a, T b ) { return a > b? a: b; }
+template <class T> 
+T Min( T a, T b ) { return a < b? a: b; }
+template <class T> 
+void chk_Max( T &a, T b ) { if( b > a ) a = b; }
+template <class T> 
+void chk_Min( T &a, T b ) { if( b < a ) a = b; }
+template <typename T>
+T read() { 
+	T sum = 0, fl = 1; 
+	char ch = getchar();
+	for (; isdigit(ch) == 0; ch = getchar())
+		if (ch == '-') fl = -1;
+	for (; isdigit(ch); ch = getchar()) sum = sum * 10 + ch - '0';
+	return sum * fl;
+}
+template <class T> 
+T pow( T a, int p ) {
+	T res = 1;
+	while( p ) {
+		if( p & 1 ) 
+			res = res * a;
+		a = a * a;
+		p >>= 1;
+	}
+	return res;
+}/*}}}*/
+
+struct Node {
+	int a[4];
+	bool operator< ( const Node &_b ) const {
+		for( int i = 0; i < 4; i ++ ) {
+			if( a[i] < _b.a[i] ) 
+				return true;
+			if( a[i] > _b.a[i] ) 
+				return false;
+		}
+		return false;
+	}
+
+	Node swap( int i, int j, int k ) {
+		Node b = *this;
+		b.a[j] = a[i];
+		b.a[k] = a[j];
+		b.a[i] = a[k];
+		return b;
+	}
+};
+
+std::map<Node, bool> mp;
+
+void dfs( Node a ) {
+	if( mp[a] ) 
+		return ;
+	mp[a] = true;
+	dfs( a.swap( 0, 1, 2 ) );
+	dfs( a.swap( 0, 1, 3 ) );
+	dfs( a.swap( 0, 2, 3 ) );
+	dfs( a.swap( 1, 2, 3 ) );
+}
+
+int main() {
+	dfs( (Node) { { 1, 2, 3, 4 } } );
+	for( auto node: mp ) {
+		printf( "%d %d %d %d\n", node.first.a[0], node.first.a[1], node.first.a[2], node.first.a[3] );
+	}
+}
