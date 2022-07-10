@@ -110,5 +110,5 @@ int main() {
 	a *= b;
 
 	for( int i = 0; i < n + m + 1; i ++ ) 
-		printf( "%d ", (int)( a.a[i].x + 0.5 ) );
+		printf( "%d ", (int)( a.a[i].x + 0.1 ) );
 }

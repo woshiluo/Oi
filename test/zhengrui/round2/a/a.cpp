@@ -72,4 +72,18 @@ int main() {
 			std::swap( h, w );
 	}
 
+	std::vector<std::vector<int>> f( w + 1 ), g( w + 1 );
+	for( int i = 1; i <= h; i ++ ) {
+		for( int j = 1; j <= w; j ++ )  {
+			if( mp[i][j] < mp[i][ j - 1 ] ) 
+				f[i].push_back(j);
+		}
+		for( int j = w; j >= 1; j -- ) {
+			if( mp[i][j] < mp[i][ j + 1 ] ) 
+				g[i].push_back(j);
+		}
+		std::sort( f.begin(), f.end() );
+		std::sort( g.begin(), g.end() );
+	}
+	for( int j = 1; j 
 }

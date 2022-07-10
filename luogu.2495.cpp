@@ -1,128 +1,205 @@
+/*
+ * luogu.2495.cpp
+ * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
+ *
+ * 「Two roads diverged in a wood,and I—
+ * I took the one less traveled by,
+ * And that has made all the difference.」
+ *
+ * Distributed under terms of the GNU AGPLv3+ license.
+ */
+
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#include <vector>
 #include <algorithm>
 
-inline int Min(int a, int b) { return a < b ? a : b;}
+typedef const int cint;
+typedef long long ll;
+typedef unsigned long long ull;
 
-const int N = 3e5;
+inline bool isdigit( const char cur ) { return cur >= '0' && cur <= '9'; }/*{{{*/
+template <class T> 
+T Max( T a, T b ) { return a > b? a: b; }
+template <class T> 
+T Min( T a, T b ) { return a < b? a: b; }
+template <class T> 
+void chk_Max( T &a, T b ) { if( b > a ) a = b; }
+template <class T> 
+void chk_Min( T &a, T b ) { if( b < a ) a = b; }
+template <typename T>
+T read() { 
+	T sum = 0, fl = 1; 
+	char ch = getchar();
+	for (; isdigit(ch) == 0; ch = getchar())
+		if (ch == '-') fl = -1;
+	for (; isdigit(ch); ch = getchar()) sum = sum * 10 + ch - '0';
+	return sum * fl;
+}
+template <class T> 
+T pow( T a, int p ) {
+	T res = 1;
+	while( p ) {
+		if( p & 1 ) 
+			res = res * a;
+		a = a * a;
+		p >>= 1;
+	}
+	return res;
+}/*}}}*/
+
+const int N = 3e5 + 1e4;
+const int K = 22;
 const int INF = 0x3f3f3f3f;
 
-int n, m;
-int is[N], min[N];
-
-// Edge Start 
-struct edge {
+struct Edge {/*{{{*/
 	int to, next, val;
-} e[N << 1], ne[N << 1];
-int ehead[N], ecnt, nehead[N], necnt;
-
-inline void add_edge(int now, int to, int val, int ehead[], int& ecnt, edge e[]) {
+} e[ N << 1 ];
+int ehead[N], ecnt;
+void add_edge( cint cur, cint to, cint val ) {
 	ecnt ++;
 	e[ecnt].to = to;
+	e[ecnt].next = ehead[cur];
 	e[ecnt].val = val;
-	e[ecnt].next = ehead[now]; 
-	ehead[now] = ecnt;
-}
-// Edge End
+	ehead[cur] = ecnt;
+}/*}}}*/
 
-// Heavy-Light Decopostion Start 
-int dep[N], fa[N], son[N], mson[N], id[N], top[N], idcnt;
-void pre_son(int now = 1, int la = 0, int depth = 1) {
-	dep[now] = depth; fa[now] = la;
-	son[now] = 1;
-	for(int i = ehead[now]; i; i = e[i].next) {
-		if( e[i].to == la )
+int idx; 
+int dfn[N], dep[N];
+int fa[N][K], min[N][K];
+void dfs( cint cur, cint la ) {/*{{{*/
+	idx ++; dfn[cur] = idx;
+	fa[cur][0] = la; dep[cur] = dep[la] + 1;
+
+	for( int k = 1; k < K; k ++ ) {
+		if( fa[cur][ k - 1 ] ) {
+			fa[cur][k] = fa[ fa[cur][ k - 1 ] ][ k - 1 ];
+			min[cur][k] = Min( min[ fa[cur][ k - 1 ] ][ k - 1 ], min[cur][ k - 1 ] );
+		}
+	}
+
+	for( int i = ehead[cur]; i; i = e[i].next ) {
+		if( e[i].to == la ) 
 			continue;
-		min[ e[i].to ] = Min(min[now], e[i].val);
-		pre_son(e[i].to, now, depth + 1);
-		son[now] += son[ e[i].to ];
-		if( son[ e[i].to ] > son[ mson[now] ] )
-			mson[now] = e[i].to;
-	}
-}
 
-void get_top(int now = 1, int la = 0) {
-	id[now] = ++idcnt;
-	if( top[now] == 0 )
-		top[now] = now;
-	if( mson[now] == 0 )
-		return ;
-	top[ mson[now] ] = top[now];
-	get_top(mson[now], now);
-	for(int i = ehead[now]; i; i = e[i].next) {
-		if( e[i].to == la || e[i].to == mson[now] )
-			continue;
-		get_top(e[i].to, now);
+		cint to = e[i].to;
+		min[to][0] = e[i].val;
+		dfs( to, cur );
 	}
-}
+}/*}}}*/
 
-int lca(int from, int to) {
-	while( top[from] != top[to] ) {
-		if(dep[from] < dep[to] ) 
-			{ int tmp = to; to = from; from = tmp; }
-		from = fa[ top[from] ];
+int get_lca( int from, int to ) {/*{{{*/
+	if( dep[from] < dep[to] ) 
+		std::swap( from, to );
+	for( int k = K - 1; k >= 0; k -- ) {
+		if( fa[from][k] && dep[ fa[from][k] ] >= dep[to] ) 
+			from = fa[from][k];
 	}
-	return dep[from] > dep[to]? to: from;
-}
-// Heavy-Light Decopostion End
-
-bool cmp(int a, int b) { return id[a] < id[b]; }
-
-int st[N], stcnt;
-
-void push(int now){
-	if( stcnt == 1 ) {
-		st[ ++ stcnt ] = now;
-		return ;
+	if( from == to ) 
+		return from;
+	for( int k = K - 1; k >= 0; k -- ) {
+		if( fa[from][k] && fa[to][k] && fa[from][k] != fa[to][k] ) {
+			from = fa[from][k];
+			to = fa[to][k];
+		}
 	}
-	int l = lca(now, st[stcnt]);
-	if(l == st[stcnt]) 
-		return ;
-	while( stcnt > 1 && id[ st[ stcnt - 1 ] ] >= id[l] )
-		add_edge(st[ stcnt - 1 ], 0, st[stcnt], nehead, necnt, ne), stcnt --;
-	if( st[stcnt] != l ) {
-		add_edge(l, st[stcnt], 0, nehead, necnt, ne);
-		st[stcnt] = l;
-	}
-	st[ ++ stcnt ] = now;
-}
+	return fa[from][0];
+}/*}}}*/
 
-int dfs(int now) {
-	if( nehead[now] == 0 )
-		return min[now];
-	int temp = 0;
-	for(int i = nehead[now]; i; i = ne[i].next) {
-		temp += dfs( ne[i].to );
+// should promse: lca(from,to) = from
+int get_min( cint from, cint to ) {/*{{{*/
+	int cur = to;
+	int res = INF;
+	for( int k = K - 1; k >= 0; k -- ) {
+		if( fa[cur][k] && dep[ fa[cur][k] ] >= dep[from] ) {
+			chk_Min( res, min[cur][k] );
+			cur = fa[cur][k];
+		}
 	}
-	nehead[now] = 0;
-	return Min(min[now], temp);
-}
+	return res;
+}/*}}}*/
+
+ll f[N];
+bool impo[N];
+
+void dp( cint cur ) {/*{{{*/
+	f[cur] = 0;
+	for( int i = ehead[cur]; i; i = e[i].next ) {
+		cint to = e[i].to;
+		dp(to);
+		if( impo[to] ) 
+			f[cur] += e[i].val;
+		else
+			f[cur] += Min( f[to], (ll)e[i].val );
+	}
+}/*}}}*/
 
 int main() {
 #ifdef woshiluo
-	freopen("luogu.2495.in", "r", stdin);
-	freopen("luogu.2495.out", "w", stdout);
+	freopen( "luogu.2495.in", "r", stdin );
+	freopen( "luogu.2495.out", "w", stdout );
 #endif
-	scanf("%d", &n);
-	for(int i = 1, u, v, w; i < n; i++) {
-		scanf("%d%d%d", &u, &v, &w);
-		add_edge(u, v, w, ehead, ecnt, e);
-		add_edge(v, u, w, ehead, ecnt, e);
+	cint n = read<int>();
+	for( int i = 1; i < n; i ++ ) {
+		cint u = read<int>();
+		cint v = read<int>();
+		cint w = read<int>();
+		add_edge( u, v, w );
+		add_edge( v, u, w );
 	}
-	min[1] = INF;
-	pre_son();
-	get_top();
-	scanf("%d", &m);
-	while( m -- ) {
-		int tmp;
-		scanf("%d", &tmp);
-		for(int i = 1; i <= tmp; i++) 
-			scanf("%d", &is[i]);
-		std::sort(is + 1, is + tmp + 1, cmp);
-		st[ stcnt = 1 ] = 1;
-		for(int i = 1; i <= tmp; i++) 
-			push( is[i] );
-		while( stcnt > 0 ) 
-			add_edge(st[stcnt - 1], st[stcnt], 0, nehead, necnt, ne), stcnt --;
-		printf("%d\n", dfs(1));
+
+	dfs( 1, 0 );
+
+	ecnt = 0;
+	for( int i = 1; i <= n; i ++ ) 
+		ehead[i] = 0;
+
+	cint m = read<int>();
+	for( int _ = 1; _ <= m; _ ++ ) {
+		std::vector<int> list, set;
+		int k = read<int>();
+		for( int i = 1; i <= k; i ++ ) {
+			list.push_back( read<int>() );
+			impo[ list.back() ] = true;
+		}
+		std::sort( list.begin(), list.end(), []( const int &_a, const int &_b ) { return dfn[_a] < dfn[_b]; } );
+		
+		std::vector<int> st;
+		st.push_back(1); set.push_back(1);
+		
+		auto try_pop = [&]() {
+			cint cur = st.back(); st.pop_back();
+			set.push_back(cur);
+			add_edge( st.back(), cur, get_min( st.back(), cur ) );
+		};
+		for( auto &x: list ) {
+			while(1) {
+				cint lca = get_lca( x, st.back() );
+				if( lca == st.back() || dfn[ st[ st.size() - 2 ] ] < dfn[lca] ) 
+					break;
+				try_pop();
+			}
+
+			cint lca = get_lca( x, st.back() );
+			if( lca != st.back() ) {
+				cint tmp = st.back(); st.pop_back();
+				st.push_back(lca); st.push_back(tmp);
+				try_pop();
+			}
+			st.push_back(x);
+		}
+		while( st.size() > 1 ) 
+			try_pop();
+
+		dp(1);
+		printf( "%lld\n", f[1] );
+
+		ecnt = 0;
+		for( auto &x: set ) {
+			ehead[x] = 0;
+			impo[x] = false;
+		}
 	}
 }

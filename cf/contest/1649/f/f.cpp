@@ -135,12 +135,12 @@ ll l[N], r[N];
 struct Segment { 
 	int from, to, k; 
 	bool operator< ( const Segment &_b ) const {
-		if( from == _b.from ) {
-			if( to == _b.to )
+		if( to == _b.to ) {
+			if( from == _b.from )
 				return k < _b.k;
-			return to < _b.to;
+			return from < _b.from;
 		}
-		return from < _b.from;
+		return to < _b.to;
 	}
 };
 
