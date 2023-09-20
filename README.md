@@ -1,4 +1,4 @@
-# Oi 
+# algorithm_competition
 
 这项目存储本蒟蒻的部分刷题代码  
 欢迎 dalao 们前来吐槽  
