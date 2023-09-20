@@ -1,0 +1,170 @@
+{
+//	"log": {
+//		"access": "none",
+//		"loglevel": "debug"
+//	},
+	"dns": {
+		"servers": [ "127.0.0.1" ]
+	},
+	"inbounds": [
+		{
+			"tag" : "HK",
+			"port": 1080,
+			"listen": "127.0.0.1",
+			"protocol": "socks",
+			"sniffing": {
+				"enabled": true
+			},
+			"settings": { "udp": true }
+		},
+		{
+			"tag" : "JP",
+			"port": 1081,
+			"listen": "127.0.0.1",
+			"protocol": "socks",
+			"sniffing": {
+				"enabled": true
+			},
+			"settings": { "udp": true }
+		},
+		{
+			"tag" : "HK-http",
+			"port": 8119,
+			"listen": "127.0.0.1",
+			"protocol": "http"
+		},
+		{
+			"tag" : "JP-http",
+			"port": 8120,
+			"listen": "127.0.0.1",
+			"protocol": "http"
+		},
+		{
+			"tag": "JP2-pass",
+			"port": 1082,
+			"protocol": "socks",
+			"listen": "127.0.0.1",
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [ "http", "tls" ]
+			},
+			"settings": { "udp": true }
+		}
+	],
+	"outbounds": [
+		{
+			"tag": "JP-TCP",
+			"protocol": "vless",
+			"settings": {
+				"vnext": [{
+					"address": "118.27.113.23",
+					"port": 443,
+					"users": [
+						{ 
+							"id": "2a0b5dc6-5a7a-4609-ae8f-19ce975e3ac4",
+							"encryption":"none",
+							"alterId": 0 
+						}
+					]
+				}]
+			},
+			"streamSettings": {
+				"network": "tcp",
+				"security": "tls",
+				"tlsSettings": {
+					"serverName": "05f5f4a3-931a-473f-862b-27a9266c3d80.findroot.top",
+					"allowInsecure": false
+				}
+			}
+		},
+		{
+			"tag": "HK-LESS",
+			"protocol": "vless",
+			"settings": {
+				"vnext": [{
+//				"address": "127.0.0.1",
+//				"port": 5000,
+//				"address": "222.186.10.232",
+//				"port": 45239,
+				"address": "183.232.198.26",
+				"port": 30497,
+//				"address": "svr2.woshiluo.com",
+//				"port": 4651,
+					"users": [
+						{ 
+							"id": "2a0b5dc6-5a7a-4609-ae8f-19ce975e3ac4",
+							"encryption":"none",
+							"alterId": 0 
+						}
+					]
+				}]
+			},
+			"streamSettings": {
+				"network": "tcp",
+				"security": "tls",
+				"tlsSettings": {
+					"serverName": "b2b85006-4855-4bfc-b03b-46ab6a853f6e.findroot.top",
+					"allowInsecure": false,
+					"alpn": ["h2"]
+				}
+			}
+		},
+		{
+			"tag": "US",
+			"protocol": "vmess",
+			"settings": {
+				"vnext": [{
+					"address": "svr3.woshiluo.com",
+					"port": 443,
+					"users": [{ "id": "2a0b5dc6-5a7a-4609-ae8f-19ce975e3ac4","alterId": 0 }]
+				}]
+			},
+			"streamSettings": {
+				"network": "ws",
+				"security": "tls",
+				"wsSettings": {
+					"connectionReuse": true,
+					"path": "/szyakioi/"
+				},
+				"tlsSettings": {
+					"serverName": "svr3.woshiluo.com",
+					"allowInsecure": false
+				}
+			}
+		},
+		{
+			"tag": "tor", 
+			"protocol": "socks",
+			"settings": { "servers": [{ "address": "127.0.0.1", "port": 9050 }] }
+		},
+	      	{ "protocol": "freedom", "settings": {}, "tag": "direct" }    
+	],
+	"routing": {
+		"strategy": "rules",
+		"domainStrategy": "IPOnDemand",
+		"settings": {
+			"rules": [
+				{ "type": "field", "ip": [ "geoip:private" ], "outboundTag": "direct" },
+				{ "type": "field", "domain": [ "domain:wsl" ], "outboundTag": "direct" },
+
+				{ "type": "field", "inboundTag": [ "HK", "HK-http" ], "outboundTag": "HK-LESS" },
+				{ "type": "field", "inboundTag": [ "JP", "JP-http" ], "outboundTag": "JP-TCP" },
+
+				{ "type": "field", 
+					"domain": [ "geosite:tld-cn", "domain:bilibili.com", "domain:hdslb.com", "domain:bilivideo.com", "domain:xycdn.com" ], 
+					"inboundTag": [ "JP2-pass" ], "outboundTag": "direct" },
+				{ "type": "field", 
+					"domain": [ "domain:qcloud.com", "domain:douyucdn.cn", "domain:douyu.com" ], 
+					"inboundTag": [ "JP2-pass" ], "outboundTag": "direct" },
+				{ "type": "field", 
+					"domain": [ "domain:acfun.cn", "domain:aixifan.com" ], 
+					"inboundTag": [ "JP2-pass" ], "outboundTag": "direct" },
+				{ "type": "field", 
+					"domain": [ "domain:luogu.com.cn", "geosite:google" ], 
+					"inboundTag": [ "JP2-pass" ], "outboundTag": "HK-LESS" },
+				{ "type": "field", "ip": [ "geoip:cn" ], "inboundTag": [ "JP2-pass" ], "outboundTag": "direct" },
+				{ "type": "field", "inboundTag": [ "JP2-pass" ], "outboundTag": "HK-LESS" }
+			]
+		}
+	}
+}

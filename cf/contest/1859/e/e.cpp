@@ -1,25 +1,28 @@
 /*
- * f.cpp
- * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
+ * e.cpp 2023-08-21
+ * Copyright (C) 2023 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
  * I took the one less traveled by,
  * And that has made all the difference.」
  *
- * Distributed under terms of the GNU AGPLv3+ license.
+ * Distributed under terms of the GNU GNU AGPLv3+ license.
  */
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-#include <set>
+#include <deque>
 #include <vector>
 #include <algorithm>
 
 typedef const int cint;
 typedef long long ll;
 typedef unsigned long long ull;
+
+const int INF = 0x3f3f3f3f;
+const ll LLF = 0x3f3f3f3f3f3f3f3f;
 
 inline bool isdigit( const char cur ) { return cur >= '0' && cur <= '9'; }/*{{{*/
 template <class T> 
@@ -51,55 +54,19 @@ T pow( T a, int p ) {
 	return res;
 }/*}}}*/
 
-const int N = 2e5 + 1e4;
-
-int a[N], b[N];
-ll sum[N];
-
-struct Set {
-	int fa[N];
-	void init( cint _n ) { for( int i = 0; i <= _n; i ++ ) fa[i] = i; }
-	int get_fa( cint cur ) { 
-		if( fa[cur] == cur ) 
-			return cur;
-		fa[cur] = get_fa(fa[cur]);
-		return fa[cur];
-	}
-	int& operator[] ( cint idx ) { return fa[ get_fa(idx) ]; }
-};
-
-void try_erase( cint cur, std::vector<int> e[], Set &set ) {
-	if( set[cur] != cur )
-		return ;
-	set[cur] = cur + 1;
-	sum[cur] = 0;
-	for( auto &x: e[cur] ) {
-		if( sum[x] != 0 ) 
-			continue;
-		cint l = Min( cur, x );
-		cint r = Max( cur, x );
-
-		int p = set[l];
-		while( p <= r ) {
-			try_erase( p, e, set );
-			p = set[p];
-		}
-	}
-}
-
-Set set;
-
 int main() {
 #ifdef woshiluo
-	freopen( "f.in", "r", stdin );
-	freopen( "f.out", "w", stdout );
+	freopen( "e.in", "r", stdin );
+	freopen( "e.out", "w", stdout );
 #endif
+
 	int T = read<int>();
+
 	while( T -- ) {
 		cint n = read<int>();
-		cint m = read<int>();
-		set.init( n + 1 );
+		cint k = read<int>();
 
+		std::vector<int> a( n + 1 ), b( n + 1 );
 		for( int i = 1; i <= n; i ++ ) {
 			a[i] = read<int>();
 		}
@@ -107,24 +74,32 @@ int main() {
 			b[i] = read<int>();
 		}
 
-		for( int i = 1; i <= n; i ++ ) {
-			sum[i] = sum[ i - 1 ] + ( b[i] - a[i] );
-		}
-
-		std::vector<int> e[ n + 1 ];
-		for( int i = 1; i <= m; i ++ ) {
-			cint l = read<int>() - 1;
-			cint r = read<int>();
-			e[l].push_back(r);
-			e[r].push_back(l);
-		}
+		std::vector<std::vector<ll>> f(n + 1, std::vector<ll>(n + 1));
+		std::deque<ll> p1( n + 1, -LLF ), p2( n + 1, -LLF ), p3( n + 1, -LLF ), p4( n + 1, -LLF );
+		// 1  +a + b
+		// 2  -a -b
+		// 3  +a -b
+		// 4  -a +b
 
 		for( int i = 0; i <= n; i ++ ) {
-			if( sum[i] == 0 ) {
-				try_erase( i, e, set );
+			for( int j = 0; j <= Min ( i, k ); j ++ ) {
+				const int diff = i - j;
+				if( i - 1 >= 0 ) {
+					chk_Max( f[i][j], f[ i - 1 ][j] );
+					chk_Max( f[i][j], p1[diff] - a[i] - b[i] );
+					chk_Max( f[i][j], p2[diff] + a[i] + b[i] );
+					chk_Max( f[i][j], p3[diff] + a[i] - b[i] );
+					chk_Max( f[i][j], p4[diff] - a[i] + b[i] );
+				}
+				if( i != n ) {
+					chk_Max( p1[diff], f[i][j] + a[ i + 1 ] + b[ i + 1 ] );
+					chk_Max( p2[diff], f[i][j] - a[ i + 1 ] - b[ i + 1 ] );
+					chk_Max( p3[diff], f[i][j] + a[ i + 1 ] - b[ i + 1 ] );
+					chk_Max( p4[diff], f[i][j] - a[ i + 1 ] + b[ i + 1 ] );
+				}
 			}
 		}
 
-		printf( "%s\n", set[0] != n + 1? "NO": "YES" );
+		printf( "%lld\n", f[n][k] );
 	}
 }

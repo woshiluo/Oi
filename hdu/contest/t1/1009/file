@@ -1,0 +1,252 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 67.72      4.07     4.07        1     4.07     5.31  work()
+ 19.13      5.22     1.15  4732263     0.00     0.00  work()::{lambda(int, int)#1}::operator()(int, int) const
+  7.82      5.69     0.47      144     0.00     0.00  __tcf_0
+  3.99      5.93     0.24       86     0.00     0.00  frame_dummy
+  0.33      5.95     0.02                             _init
+  0.17      5.96     0.01  4476046     0.00     0.00  std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, int> >, int const&)
+  0.17      5.97     0.01  2485014     0.00     0.00  std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&)
+  0.17      5.98     0.01  1995726     0.00     0.00  std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, int const&)
+  0.17      5.99     0.01  1991032     0.00     0.00  std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&)
+  0.17      6.00     0.01  1742504     0.00     0.00  std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&)
+  0.17      6.01     0.01  1742504     0.00     0.00  std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, Node const&)
+  0.00      6.01     0.00  2000000     0.00     0.00  void std::vector<Node, std::allocator<Node> >::_M_realloc_insert<Node const&>(__gnu_cxx::__normal_iterator<Node*, std::vector<Node, std::allocator<Node> > >, Node const&)
+  0.00      6.01     0.00  1000002     0.00     0.00  int read<int>()
+  0.00      6.01     0.00        4     0.00     0.00  std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_unique_pos(int const&)
+  0.00      6.01     0.00        4     0.00     0.00  std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_unique_pos(int const&)
+  0.00      6.01     0.00        1     0.00     0.00  std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_unique_pos(Node const&)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2022 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.17% of 6.01 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     88.4    0.00    5.31                 main [1]
+                4.07    1.24       1/1           work() [2]
+                0.00    0.00       1/1000002     int read<int>() [21]
+-----------------------------------------------
+                4.07    1.24       1/1           main [1]
+[2]     88.4    4.07    1.24       1         work() [2]
+                1.15    0.04 4732263/4732263     work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+                0.02    0.00       7/86          frame_dummy [6]
+                0.01    0.00       3/144         __tcf_0 [4]
+                0.01    0.00  998270/1991032     std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&) [11]
+                0.00    0.00  997456/2485014     std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) [10]
+                0.00    0.00  500000/1742504     std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&) [8]
+                0.00    0.00 2000000/2000000     void std::vector<Node, std::allocator<Node> >::_M_realloc_insert<Node const&>(__gnu_cxx::__normal_iterator<Node*, std::vector<Node, std::allocator<Node> > >, Node const&) [20]
+                0.00    0.00 1000001/1000002     int read<int>() [21]
+-----------------------------------------------
+                1.15    0.04 4732263/4732263     work() [2]
+[3]     19.8    1.15    0.04 4732263         work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+                0.01    0.01 1242504/1742504     std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&) [8]
+                0.01    0.00 1995726/1995726     std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, int const&) [13]
+                0.01    0.00 1487558/2485014     std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) [10]
+                0.00    0.00  992762/1991032     std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&) [11]
+                0.00    0.00       4/4           std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_unique_pos(int const&) [22]
+-----------------------------------------------
+                              835939             __tcf_0 [4]
+                0.01    0.00       3/144         work() [2]
+                0.10    0.05      30/144         std::map<Node, int, std::less<Node>, std::allocator<std::pair<Node const, int> > >::~map() [7]
+                0.36    0.17     111/144         __tcf_1 [5]
+[4]     11.5    0.47    0.22     144+835939  __tcf_0 [4]
+                0.22    0.00      79/86          frame_dummy [6]
+                              835939             __tcf_0 [4]
+-----------------------------------------------
+                                                 <spontaneous>
+[5]      8.9    0.00    0.53                 __tcf_1 [5]
+                0.36    0.17     111/144         __tcf_0 [4]
+-----------------------------------------------
+                             1995647             frame_dummy [6]
+                0.02    0.00       7/86          work() [2]
+                0.22    0.00      79/86          __tcf_0 [4]
+[6]      4.0    0.24    0.00      86+1995647 frame_dummy [6]
+                             1995647             frame_dummy [6]
+-----------------------------------------------
+                                                 <spontaneous>
+[7]      2.4    0.00    0.14                 std::map<Node, int, std::less<Node>, std::allocator<std::pair<Node const, int> > >::~map() [7]
+                0.10    0.05      30/144         __tcf_0 [4]
+-----------------------------------------------
+                0.00    0.00  500000/1742504     work() [2]
+                0.01    0.01 1242504/1742504     work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+[8]      0.3    0.01    0.01 1742504         std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&) [8]
+                0.01    0.00 1742504/1742504     std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, Node const&) [14]
+                0.00    0.00       1/1           std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_unique_pos(Node const&) [24]
+-----------------------------------------------
+                                                 <spontaneous>
+[9]      0.3    0.02    0.00                 _init [9]
+-----------------------------------------------
+                0.00    0.00  997456/2485014     work() [2]
+                0.01    0.00 1487558/2485014     work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+[10]     0.3    0.01    0.01 2485014         std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) [10]
+                0.01    0.00 2485014/4476046     std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, int> >, int const&) [12]
+                0.00    0.00       2/4           std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_unique_pos(int const&) [23]
+-----------------------------------------------
+                0.00    0.00  992762/1991032     work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+                0.01    0.00  998270/1991032     work() [2]
+[11]     0.2    0.01    0.00 1991032         std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&) [11]
+                0.00    0.00 1991032/4476046     std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, int> >, int const&) [12]
+                0.00    0.00       2/4           std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_unique_pos(int const&) [23]
+-----------------------------------------------
+                0.00    0.00 1991032/4476046     std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&) [11]
+                0.01    0.00 2485014/4476046     std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) [10]
+[12]     0.2    0.01    0.00 4476046         std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, int> >, int const&) [12]
+-----------------------------------------------
+                0.01    0.00 1995726/1995726     work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+[13]     0.2    0.01    0.00 1995726         std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, int const&) [13]
+-----------------------------------------------
+                0.01    0.00 1742504/1742504     std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&) [8]
+[14]     0.2    0.01    0.00 1742504         std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, Node const&) [14]
+-----------------------------------------------
+                0.00    0.00 2000000/2000000     work() [2]
+[20]     0.0    0.00    0.00 2000000         void std::vector<Node, std::allocator<Node> >::_M_realloc_insert<Node const&>(__gnu_cxx::__normal_iterator<Node*, std::vector<Node, std::allocator<Node> > >, Node const&) [20]
+-----------------------------------------------
+                0.00    0.00       1/1000002     main [1]
+                0.00    0.00 1000001/1000002     work() [2]
+[21]     0.0    0.00    0.00 1000002         int read<int>() [21]
+-----------------------------------------------
+                0.00    0.00       4/4           work()::{lambda(int, int)#1}::operator()(int, int) const [3]
+[22]     0.0    0.00    0.00       4         std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_unique_pos(int const&) [22]
+-----------------------------------------------
+                0.00    0.00       2/4           std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) [10]
+                0.00    0.00       2/4           std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&) [11]
+[23]     0.0    0.00    0.00       4         std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_unique_pos(int const&) [23]
+-----------------------------------------------
+                0.00    0.00       1/1           std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&) [8]
+[24]     0.0    0.00    0.00       1         std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_unique_pos(Node const&) [24]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2022 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [21] int read<int>()        [22] std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_unique_pos(int const&) [3] work()::{lambda(int, int)#1}::operator()(int, int) const
+   [2] work()                 [13] std::_Rb_tree<int, std::pair<int const, std::vector<Node, std::allocator<Node> > >, std::_Select1st<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, std::less<int>, std::allocator<std::pair<int const, std::vector<Node, std::allocator<Node> > > > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, std::vector<Node, std::allocator<Node> > > >, int const&) [4] __tcf_0
+  [20] void std::vector<Node, std::allocator<Node> >::_M_realloc_insert<Node const&>(__gnu_cxx::__normal_iterator<Node*, std::vector<Node, std::allocator<Node> > >, Node const&) [11] std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int&&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int&&>&&, std::tuple<>&&) [9] _init
+   [8] std::_Rb_tree_iterator<std::pair<Node const, int> > std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<Node const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, std::piecewise_construct_t const&, std::tuple<Node const&>&&, std::tuple<>&&) [10] std::_Rb_tree_iterator<std::pair<int const, int> > std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_emplace_hint_unique<std::piecewise_construct_t const&, std::tuple<int const&>, std::tuple<> >(std::_Rb_tree_const_iterator<std::pair<int const, int> >, std::piecewise_construct_t const&, std::tuple<int const&>&&, std::tuple<>&&) [6] frame_dummy
+  [24] std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_unique_pos(Node const&) [23] std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_unique_pos(int const&)
+  [14] std::_Rb_tree<Node, std::pair<Node const, int>, std::_Select1st<std::pair<Node const, int> >, std::less<Node>, std::allocator<std::pair<Node const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<Node const, int> >, Node const&) [12] std::_Rb_tree<int, std::pair<int const, int>, std::_Select1st<std::pair<int const, int> >, std::less<int>, std::allocator<std::pair<int const, int> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<int const, int> >, int const&)

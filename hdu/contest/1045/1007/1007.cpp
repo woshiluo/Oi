@@ -1,5 +1,5 @@
 /*
- * f.cpp
+ * 1007.cpp
  * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -14,6 +14,7 @@
 #include <cstring>
 
 #include <set>
+#include <map>
 #include <vector>
 #include <algorithm>
 
@@ -51,80 +52,45 @@ T pow( T a, int p ) {
 	return res;
 }/*}}}*/
 
-const int N = 2e5 + 1e4;
+struct Node { int id, l, r; };
 
-int a[N], b[N];
-ll sum[N];
+const int N = 1e5 + 1e4;
 
-struct Set {
-	int fa[N];
-	void init( cint _n ) { for( int i = 0; i <= _n; i ++ ) fa[i] = i; }
-	int get_fa( cint cur ) { 
-		if( fa[cur] == cur ) 
-			return cur;
-		fa[cur] = get_fa(fa[cur]);
-		return fa[cur];
-	}
-	int& operator[] ( cint idx ) { return fa[ get_fa(idx) ]; }
-};
+int fa[N];
 
-void try_erase( cint cur, std::vector<int> e[], Set &set ) {
-	if( set[cur] != cur )
-		return ;
-	set[cur] = cur + 1;
-	sum[cur] = 0;
-	for( auto &x: e[cur] ) {
-		if( sum[x] != 0 ) 
-			continue;
-		cint l = Min( cur, x );
-		cint r = Max( cur, x );
-
-		int p = set[l];
-		while( p <= r ) {
-			try_erase( p, e, set );
-			p = set[p];
-		}
-	}
+int get_fa( cint cur ) {
+	if( fa[cur] == cur ) 
+		return cur;
+	return fa[cur] = get_fa( fa[cur] );
 }
 
-Set set;
-
 int main() {
-#ifdef woshiluo
-	freopen( "f.in", "r", stdin );
-	freopen( "f.out", "w", stdout );
-#endif
 	int T = read<int>();
 	while( T -- ) {
 		cint n = read<int>();
-		cint m = read<int>();
-		set.init( n + 1 );
-
+		std::vector<Node> nodes;
 		for( int i = 1; i <= n; i ++ ) {
-			a[i] = read<int>();
-		}
-		for( int i = 1; i <= n; i ++ ) {
-			b[i] = read<int>();
-		}
-
-		for( int i = 1; i <= n; i ++ ) {
-			sum[i] = sum[ i - 1 ] + ( b[i] - a[i] );
-		}
-
-		std::vector<int> e[ n + 1 ];
-		for( int i = 1; i <= m; i ++ ) {
-			cint l = read<int>() - 1;
+			cint l = read<int>();
 			cint r = read<int>();
-			e[l].push_back(r);
-			e[r].push_back(l);
+			fa[i] = i;
+			nodes.push_back( (Node) { i, l, r } );
 		}
+		std::sort( nodes.begin(), nodes.end(), []( const Node &_a, const Node &_b ) { 
+			if( _a.r == _b.r )
+				return _a.l < _b.l; 
+			return _a.r < _b.r; 
+		});
 
-		for( int i = 0; i <= n; i ++ ) {
-			if( sum[i] == 0 ) {
-				try_erase( i, e, set );
+		int res = 0, r = -1;
+		for( auto &node: nodes ) {
+			if( node.l <= r ) {
+				res --;
+				break;
 			}
+			r = node.r;
+			res ++;
 		}
 
-		printf( "%s\n", set[0] != n + 1? "NO": "YES" );
+		printf( "%d\n", res );
 	}
 }

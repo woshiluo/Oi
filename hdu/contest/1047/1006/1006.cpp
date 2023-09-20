@@ -1,5 +1,5 @@
 /*
- * f.cpp
+ * 1006.cpp
  * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -13,8 +13,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <set>
-#include <vector>
 #include <algorithm>
 
 typedef const int cint;
@@ -51,80 +49,55 @@ T pow( T a, int p ) {
 	return res;
 }/*}}}*/
 
-const int N = 2e5 + 1e4;
+const int N = 1e5 + 1e4;
 
-int a[N], b[N];
-ll sum[N];
+int a[N];
 
-struct Set {
-	int fa[N];
-	void init( cint _n ) { for( int i = 0; i <= _n; i ++ ) fa[i] = i; }
-	int get_fa( cint cur ) { 
-		if( fa[cur] == cur ) 
-			return cur;
-		fa[cur] = get_fa(fa[cur]);
-		return fa[cur];
+void add_200( long long &res, long long cur ) {
+	if( res < 200000 && res + ( cur * 8 / 10 ) >= 200000 ) {
+		const long long t = ( 200000 - res ) * 10 / 8;
+		res = 200000; cur -= t;
 	}
-	int& operator[] ( cint idx ) { return fa[ get_fa(idx) ]; }
-};
 
-void try_erase( cint cur, std::vector<int> e[], Set &set ) {
-	if( set[cur] != cur )
-		return ;
-	set[cur] = cur + 1;
-	sum[cur] = 0;
-	for( auto &x: e[cur] ) {
-		if( sum[x] != 0 ) 
-			continue;
-		cint l = Min( cur, x );
-		cint r = Max( cur, x );
-
-		int p = set[l];
-		while( p <= r ) {
-			try_erase( p, e, set );
-			p = set[p];
-		}
-	}
+	if( res >= 200000 ) 
+		res += cur * 5 / 10;
+	else
+		res += cur * 8 / 10;
 }
 
-Set set;
+void add_100( long long &res, long long cur ) {
+	if( res < 100000 && res + cur >= 100000 ) {
+		const long long t = 100000 - res;
+		res += t; cur -= t;
+	}
+	if( res >= 100000 ) 
+		add_200( res, cur );
+	else
+		res += cur;
+}
 
 int main() {
 #ifdef woshiluo
-	freopen( "f.in", "r", stdin );
-	freopen( "f.out", "w", stdout );
+	freopen( "1006.in", "r", stdin );
+	freopen( "1006.out", "w", stdout );
 #endif
 	int T = read<int>();
 	while( T -- ) {
 		cint n = read<int>();
-		cint m = read<int>();
-		set.init( n + 1 );
-
-		for( int i = 1; i <= n; i ++ ) {
+		for( int i = 1; i <= n; i ++ ) 
 			a[i] = read<int>();
-		}
+
+		ll res1 = 0, res2 = 0;
 		for( int i = 1; i <= n; i ++ ) {
-			b[i] = read<int>();
+			add_100( res1, a[i] * 1000 );
+			if( res2 >= 200000 )
+				res2 += a[i] * 500;
+			else if( res2 >= 100000 ) 
+				res2 += a[i] * 800;
+			else
+				res2 += a[i] * 1000;
 		}
 
-		for( int i = 1; i <= n; i ++ ) {
-			sum[i] = sum[ i - 1 ] + ( b[i] - a[i] );
-		}
-
-		std::vector<int> e[ n + 1 ];
-		for( int i = 1; i <= m; i ++ ) {
-			cint l = read<int>() - 1;
-			cint r = read<int>();
-			e[l].push_back(r);
-			e[r].push_back(l);
-		}
-
-		for( int i = 0; i <= n; i ++ ) {
-			if( sum[i] == 0 ) {
-				try_erase( i, e, set );
-			}
-		}
-
-		printf( "%s\n", set[0] != n + 1? "NO": "YES" );
+		printf( "%.3lf %.3lf\n", 0.001 * res1, 0.001 * res2 );
 	}
 }

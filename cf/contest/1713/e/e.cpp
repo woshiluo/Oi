@@ -1,5 +1,5 @@
 /*
- * f.cpp
+ * e.cpp
  * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -13,8 +13,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <set>
-#include <vector>
 #include <algorithm>
 
 typedef const int cint;
@@ -51,80 +49,72 @@ T pow( T a, int p ) {
 	return res;
 }/*}}}*/
 
-const int N = 2e5 + 1e4;
-
-int a[N], b[N];
-ll sum[N];
+const int N = 1100;
 
 struct Set {
-	int fa[N];
-	void init( cint _n ) { for( int i = 0; i <= _n; i ++ ) fa[i] = i; }
-	int get_fa( cint cur ) { 
-		if( fa[cur] == cur ) 
+	int set[ N << 4 ];
+	void init( cint n ) { for( int i = 0; i <= n; i ++ ) set[i] = i; }
+	int get_fa( cint cur ) {
+		if( set[cur] == cur )
 			return cur;
-		fa[cur] = get_fa(fa[cur]);
-		return fa[cur];
+		set[cur] = get_fa( set[cur] );
+		return set[cur];
 	}
-	int& operator[] ( cint idx ) { return fa[ get_fa(idx) ]; }
-};
-
-void try_erase( cint cur, std::vector<int> e[], Set &set ) {
-	if( set[cur] != cur )
-		return ;
-	set[cur] = cur + 1;
-	sum[cur] = 0;
-	for( auto &x: e[cur] ) {
-		if( sum[x] != 0 ) 
-			continue;
-		cint l = Min( cur, x );
-		cint r = Max( cur, x );
-
-		int p = set[l];
-		while( p <= r ) {
-			try_erase( p, e, set );
-			p = set[p];
-		}
+	int& operator[]( const int cur ) { 
+		return set[ get_fa(cur) ];
 	}
-}
+} set;
 
-Set set;
+int a[N][N];
+bool tag[N][N];
 
 int main() {
 #ifdef woshiluo
-	freopen( "f.in", "r", stdin );
-	freopen( "f.out", "w", stdout );
+	freopen( "e.in", "r", stdin );
+	freopen( "e.out", "w", stdout );
 #endif
 	int T = read<int>();
 	while( T -- ) {
 		cint n = read<int>();
-		cint m = read<int>();
-		set.init( n + 1 );
-
 		for( int i = 1; i <= n; i ++ ) {
-			a[i] = read<int>();
-		}
-		for( int i = 1; i <= n; i ++ ) {
-			b[i] = read<int>();
-		}
-
-		for( int i = 1; i <= n; i ++ ) {
-			sum[i] = sum[ i - 1 ] + ( b[i] - a[i] );
-		}
-
-		std::vector<int> e[ n + 1 ];
-		for( int i = 1; i <= m; i ++ ) {
-			cint l = read<int>() - 1;
-			cint r = read<int>();
-			e[l].push_back(r);
-			e[r].push_back(l);
-		}
-
-		for( int i = 0; i <= n; i ++ ) {
-			if( sum[i] == 0 ) {
-				try_erase( i, e, set );
+			for( int j = 1; j <= n; j ++ ) {
+				a[i][j] = read<int>();
 			}
 		}
 
-		printf( "%s\n", set[0] != n + 1? "NO": "YES" );
+		set.init( n * 3 );
+		for( int i = 1; i <= n; i ++ ) {
+			for( int j = 1; j <= n; j ++ ) {
+				if( i >= j ) 
+					continue;
+				if( a[i][j] == a[j][i] ) 
+					continue;
+
+				bool p = ( a[i][j] < a[j][i] );
+				bool f1 = ( set[i] == set[j] );
+				bool f2 = ( set[i] == set[ j + n ] );
+
+				if( p && !f2 ) {
+					set[i] = set[j];
+					set[ i + n ] = set[ j + n ];
+				}
+				if( !p && !f1 ) {
+					set[i] = set[ j + n ];
+					set[j] = set[ i + n ];
+				}
+			}
+		}
+
+		for( int i = 1; i <= n; i ++ ) {
+			for( int j = 1; j <= n; j ++ ) {
+				bool flag = ( set[i] == set[ j + n ] );
+
+				if( flag ) 
+					printf( "%d ", a[j][i] );
+				else
+					printf( "%d ", a[i][j] );
+			}
+			printf( "\n" );
+		}
 	}
 }

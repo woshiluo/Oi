@@ -6,5 +6,6 @@
 # 关于我
 
 Woshiluo  
-一只弱省菜鸡，Oier
+一只菜鸡
+
 E-mail: woshiluo#woshiluo.site (请自行替换`#`为`@`)

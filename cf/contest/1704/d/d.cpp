@@ -1,5 +1,5 @@
 /*
- * f.cpp
+ * d.cpp
  * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -13,7 +13,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <set>
 #include <vector>
 #include <algorithm>
 
@@ -51,80 +50,49 @@ T pow( T a, int p ) {
 	return res;
 }/*}}}*/
 
-const int N = 2e5 + 1e4;
-
-int a[N], b[N];
-ll sum[N];
-
-struct Set {
-	int fa[N];
-	void init( cint _n ) { for( int i = 0; i <= _n; i ++ ) fa[i] = i; }
-	int get_fa( cint cur ) { 
-		if( fa[cur] == cur ) 
-			return cur;
-		fa[cur] = get_fa(fa[cur]);
-		return fa[cur];
-	}
-	int& operator[] ( cint idx ) { return fa[ get_fa(idx) ]; }
-};
-
-void try_erase( cint cur, std::vector<int> e[], Set &set ) {
-	if( set[cur] != cur )
-		return ;
-	set[cur] = cur + 1;
-	sum[cur] = 0;
-	for( auto &x: e[cur] ) {
-		if( sum[x] != 0 ) 
-			continue;
-		cint l = Min( cur, x );
-		cint r = Max( cur, x );
-
-		int p = set[l];
-		while( p <= r ) {
-			try_erase( p, e, set );
-			p = set[p];
-		}
-	}
-}
-
-Set set;
+template <class T>
+T aabs( T cur ) { return cur < 0? -cur: cur; }
 
 int main() {
 #ifdef woshiluo
-	freopen( "f.in", "r", stdin );
-	freopen( "f.out", "w", stdout );
+	freopen( "d.in", "r", stdin );
+	freopen( "d.out", "w", stdout );
 #endif
 	int T = read<int>();
 	while( T -- ) {
-		cint n = read<int>();
 		cint m = read<int>();
-		set.init( n + 1 );
+		cint n = read<int>();
 
-		for( int i = 1; i <= n; i ++ ) {
-			a[i] = read<int>();
-		}
-		for( int i = 1; i <= n; i ++ ) {
-			b[i] = read<int>();
-		}
-
-		for( int i = 1; i <= n; i ++ ) {
-			sum[i] = sum[ i - 1 ] + ( b[i] - a[i] );
-		}
-
-		std::vector<int> e[ n + 1 ];
+		std::vector<std::vector<ll>> c( m + 1 );
 		for( int i = 1; i <= m; i ++ ) {
-			cint l = read<int>() - 1;
-			cint r = read<int>();
-			e[l].push_back(r);
-			e[r].push_back(l);
-		}
-
-		for( int i = 0; i <= n; i ++ ) {
-			if( sum[i] == 0 ) {
-				try_erase( i, e, set );
+			c[i].resize( n + 1 );
+			for( int j = 1; j <= n; j ++ ) {
+				c[i][j] = read<int>();
+				c[i][j] += c[i][ j - 1 ];
 			}
 		}
 
-		printf( "%s\n", set[0] != n + 1? "NO": "YES" );
+		{
+			ll r1 = 0, r2 = 0;
+			for( int j = 1; j <= n; j ++ ) {
+				r1 += c[1][j] - c[2][j];
+				r2 += c[1][j] - c[3][j];
+			}
+			if( r1 != 0 && r2 != 0 ) {
+				printf( "%d %lld\n", 1, aabs(r1) );
+				continue;
+			}
+		}
+
+		for( int i = 2; i <= m; i ++ ) {
+			ll res = 0;
+			for( int j = 1; j <= n; j ++ ) {
+				res += c[i][j] - c[ i - 1 ][j];
+			}
+			if( res != 0 ) {
+				printf( "%d %lld\n", i, aabs(res) );
+				break;
+			}
+		}
 	}
 }

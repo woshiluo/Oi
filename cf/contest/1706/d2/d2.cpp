@@ -1,5 +1,5 @@
 /*
- * f.cpp
+ * d1.cpp
  * Copyright (C) 2022 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <set>
+#include <queue>
 #include <vector>
 #include <algorithm>
 
@@ -51,80 +51,82 @@ T pow( T a, int p ) {
 	return res;
 }/*}}}*/
 
-const int N = 2e5 + 1e4;
+const int N = 1e5 + 5;
 
-int a[N], b[N];
-ll sum[N];
+int a[N];
+int  val[N], pos[N];
 
-struct Set {
-	int fa[N];
-	void init( cint _n ) { for( int i = 0; i <= _n; i ++ ) fa[i] = i; }
-	int get_fa( cint cur ) { 
-		if( fa[cur] == cur ) 
-			return cur;
-		fa[cur] = get_fa(fa[cur]);
-		return fa[cur];
-	}
-	int& operator[] ( cint idx ) { return fa[ get_fa(idx) ]; }
+struct Node {
+	int val, pos;
+	bool operator< ( const Node &_b ) const { return val > _b.val; }
 };
-
-void try_erase( cint cur, std::vector<int> e[], Set &set ) {
-	if( set[cur] != cur )
-		return ;
-	set[cur] = cur + 1;
-	sum[cur] = 0;
-	for( auto &x: e[cur] ) {
-		if( sum[x] != 0 ) 
-			continue;
-		cint l = Min( cur, x );
-		cint r = Max( cur, x );
-
-		int p = set[l];
-		while( p <= r ) {
-			try_erase( p, e, set );
-			p = set[p];
-		}
-	}
-}
-
-Set set;
 
 int main() {
 #ifdef woshiluo
-	freopen( "f.in", "r", stdin );
-	freopen( "f.out", "w", stdout );
+	freopen( "d2.in", "r", stdin );
+	freopen( "d2.out", "w", stdout );
 #endif
 	int T = read<int>();
 	while( T -- ) {
 		cint n = read<int>();
-		cint m = read<int>();
-		set.init( n + 1 );
+		cint k = read<int>();
 
-		for( int i = 1; i <= n; i ++ ) {
+		for( int i = 1; i <= n; i ++ ) 
 			a[i] = read<int>();
-		}
-		for( int i = 1; i <= n; i ++ ) {
-			b[i] = read<int>();
+		bool all_1 = true;
+		for( int i = 1; i <= n; i ++ ) 
+			if( a[i] > k ) 
+				all_1 = false;
+
+		if( all_1 ) {
+			printf( "0\n" );
+			continue;
 		}
 
-		for( int i = 1; i <= n; i ++ ) {
-			sum[i] = sum[ i - 1 ] + ( b[i] - a[i] );
-		}
+		std::vector<int> wait[N];
+		std::deque<int> q;
 
-		std::vector<int> e[ n + 1 ];
-		for( int i = 1; i <= m; i ++ ) {
-			cint l = read<int>() - 1;
-			cint r = read<int>();
-			e[l].push_back(r);
-			e[r].push_back(l);
-		}
+		int res = N;
+		int min = N;
+		for( int j = 1; j <= n; j ++ ) {
+			for( int l = 1, r = 0; r + 1 <= a[j]; l = r + 1 ) {
+				r = a[j] / ( a[j] / l );
+				pos[j] = l;
+				val[j] = a[j] / l;
+				wait[ val[j] ].push_back(j);
 
-		for( int i = 0; i <= n; i ++ ) {
-			if( sum[i] == 0 ) {
-				try_erase( i, e, set );
+				chk_Min( min, val[j] );
+
+				break;
 			}
 		}
 
-		printf( "%s\n", set[0] != n + 1? "NO": "YES" );
+		bool flag = true;
+		for( int i = N - 1; i >= 1; i -- ) {
+			chk_Min( res, i - min );
+
+			for( auto &x: wait[i] ) {
+				cint oldr = a[x] / ( a[x] / pos[x] );
+				for( int l = oldr + 1, r = oldr; r + 1 <= a[x]; l = r + 1 ) {
+					if( l > k ) {
+						flag = false;
+						break;
+					}
+					r = a[x] / ( a[x] / l );
+					pos[x] = l;
+					val[x] = a[x] / l;
+					wait[ val[x] ].push_back(x);
+
+					chk_Min( min, val[x] );
+
+					break;
+				}
+			}
+			wait[i].clear(); wait[i].shrink_to_fit();
+			if( !flag ) 
+				break;
+		}
+
+		printf( "%d\n", res );
 	}
 }
