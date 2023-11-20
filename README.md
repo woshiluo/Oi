@@ -8,4 +8,4 @@
 Woshiluo  
 一只菜鸡
 
-E-mail: woshiluo#woshiluo.site (请自行替换`#`为`@`)
+E-mail: woshiluo.luo#outlook.com (请自行替换`#`为`@`)
