@@ -1,0 +1,111 @@
+/*
+ * h.cpp 2023-12-17
+ * Copyright (C) 2023 Woshiluo Luo <woshiluo.luo@outlook.com>
+ *
+ * 「Two roads diverged in a wood,and I—
+ * I took the one less traveled by,
+ * And that has made all the difference.」
+ *
+ * Distributed under terms of the GNU GNU AGPLv3+ license.
+ */
+
+#include <cstdio>
+#include <cstdint>
+#include <cstring>
+#include <cstdlib>
+
+#include <set>
+#include <vector>
+#include <algorithm>
+
+using i32 = int32_t;
+using u32 = uint32_t;
+using ci32 = const int32_t;
+using cu32 = const uint32_t;
+
+using i64 = int64_t;
+using u64 = uint64_t;
+using ci64 = const int64_t;
+using cu64 = const uint64_t;
+
+inline bool isdigit( const char cur ) { return cur >= '0' && cur <= '9'; }/*{{{*/
+template <class T> 
+T Max( T a, T b ) { return a > b? a: b; }
+template <class T> 
+T Min( T a, T b ) { return a < b? a: b; }
+template <class T> 
+void chk_Max( T &a, T b ) { if( b > a ) a = b; }
+template <class T> 
+void chk_Min( T &a, T b ) { if( b < a ) a = b; }
+template <typename T>
+T read() { 
+	T sum = 0, fl = 1; 
+	char ch = getchar();
+	for (; isdigit(ch) == 0; ch = getchar())
+		if (ch == '-') fl = -1;
+	for (; isdigit(ch); ch = getchar()) sum = sum * 10 + ch - '0';
+	return sum * fl;
+}
+template <class T> 
+T pow( T a, i32 p ) {
+	T res = 1;
+	while( p ) {
+		if( p & 1 ) 
+			res = res * a;
+		a = a * a;
+		p >>= 1;
+	}
+	return res;
+}/*}}}*/
+
+const i32 N = 1e6 + 1e5;
+const int K = 22;
+
+i32 full_pow( ci32 cur ) { return 1LL << cur; }
+
+int a[N], pool[N], f[N][K];
+
+std::set<i32> set[N];
+
+int main() {
+#ifdef woshiluo
+	freopen( "h.in", "r", stdin );
+	freopen( "h.out", "w", stdout );
+#endif
+
+	ci32 n = read<i32>();
+	{/*{{{*/
+		static char str[N];
+		scanf( "%s", str );
+		for( int i = 0; i < n; i ++ ) {
+			a[i] = str[i] - '0';
+		}
+	}/*}}}*/
+
+	for( int i = 0; i < n; i ++ ) {
+		f[i][1] = a[i];
+		for( int j = 2; j < K; j ++ ) {
+			f[i][j] = ( f[i][j] << 1 ) + a[ i + j - 1 ];
+		}
+	}
+
+	for( int k = 0; k < 20; k ++ ) {
+		if( full_pow(k) > n ) 
+			break;
+		for( int i = 0; i < n; i ++ ) {
+			pool[ f[i][ k + 1 ] ] ++;
+			set[ f[i][ k + 1 ] ].insert( f[i] );
+		}
+		for( int i = full_pow(k); i < Min( full_pow( k + 1 ), n ); i ++ ) {
+			if( set[i].size() == 0 ) 
+				printf( "-1 0\n" );
+			else {
+				printf( "%d %lu\n", *set[i].begin(), set[i].size() );
+			}
+		}
+		for( int i = full_pow(k); i < full_pow( k + 1 ); i ++ ) {
+			pool[i] = 0;
+		}
+	}
+
+}
