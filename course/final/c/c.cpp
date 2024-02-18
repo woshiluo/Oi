@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * b.cpp 2024-01-11
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -57,43 +57,35 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
-
 int main() {
 #ifdef woshiluo
 	freopen( "c.in", "r", stdin );
 	freopen( "c.out", "w", stdout );
 #endif
 
-	i32 T = read<i32>();
-	while( T -- ) {
-		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
-		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
+	int n;
+	while( scanf( "%d", &n ) != EOF ) {
+		struct Stu {
+			char name[16];
+			int m, d;
+		};
+		std::vector<Stu> a(n);
+		for( auto &x: a ) {
+			scanf( "%s", x.name );
+			int _ = read<i32>();
+			x.m = read<i32>();
+			x.d = read<i32>();
 		}
-		printf( "%d\n", cnt );
+		ci32 m1 = read<i32>();
+		ci32 d1 = read<i32>();
+		ci32 m2 = read<i32>();
+		ci32 d2 = read<i32>();
+		for( auto &x: a ) {
+			if( ( x.m == m1 && x.d >= d1 ) ||
+					( x.m > m1 && x.m < m2 ) ||
+					( x.m == m2 && x.d <= d2 ) ) 
+				printf( "%s ", x.name );
+		}
+		printf( "\n" );
 	}
 }

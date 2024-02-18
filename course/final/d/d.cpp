@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * d.cpp 2024-01-11
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -14,6 +14,8 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <map>
+#include <queue>
 #include <vector>
 #include <algorithm>
 
@@ -57,43 +59,48 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
+
+template <class T>
+T aabs( T cur ) { return cur < 0? -cur: cur; }
+
+std::map<i32, i32> dis;
+std::map<i32, bool> vis;
 
 int main() {
 #ifdef woshiluo
-	freopen( "c.in", "r", stdin );
-	freopen( "c.out", "w", stdout );
+	freopen( "d.in", "r", stdin );
+	freopen( "d.out", "w", stdout );
 #endif
 
-	i32 T = read<i32>();
-	while( T -- ) {
-		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
-		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
+	int n, k;
+	while( scanf( "%d%d", &n, &k ) != EOF ) {
+		std::queue<i32> q;
+		q.push(n);
+		dis.clear();
+		vis.clear();
+		dis[n] = 0;
+		while( !q.empty() ) {
+			ci32 top = q.front(); q.pop();
+			if( top == k ) {
+				printf( "%d\n", dis[top] );
+				break;
 			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
+			if( dis[top] + 1 > aabs( n - k ) ) 
+				continue;
+			if( top - k > aabs( n - k ) )
+				continue;
+			if( dis.count( top + 1 ) == 0) {
+				dis[ top + 1 ] = dis[top] + 1;
+				q.push( top + 1 );
 			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
+			if( dis.count( top - 1 ) == 0 ) {
+				dis[ top - 1 ] = dis[top] + 1;
+				q.push( top - 1 );
 			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
+			if( dis.count( top << 1 ) == 0 ) {
+				dis[ top << 1 ] = dis[top] + 1;
+				q.push( top << 1 );
 			}
 		}
-		printf( "%d\n", cnt );
 	}
 }

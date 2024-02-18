@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * e.cpp 2024-01-11
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -57,43 +57,26 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
-
 int main() {
 #ifdef woshiluo
-	freopen( "c.in", "r", stdin );
-	freopen( "c.out", "w", stdout );
+	freopen( "e.in", "r", stdin );
+	freopen( "e.out", "w", stdout );
 #endif
 
-	i32 T = read<i32>();
-	while( T -- ) {
-		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
+	int n, m;
+	while( scanf( "%d%d", &m, &n ) != EOF ) {
+		if( n == -1 ) 
+			break;
+		std::vector<i32> f(2000, -1);
+		f[0] = 0;
 		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
+			ci32 x = read<i32>();
+			ci32 y = read<i32>();
+			for( int j = m; j >= y; j -- ) {
+				if( f[ j - y ] != -1 ) 
+					chk_Max( f[j], f[ j - y ] + x );
 			}
 		}
-		printf( "%d\n", cnt );
+		printf( "%d\n", f[m] );
 	}
 }

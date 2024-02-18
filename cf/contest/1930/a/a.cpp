@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * a.cpp 2024-02-17
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -57,43 +57,23 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
-
 int main() {
 #ifdef woshiluo
-	freopen( "c.in", "r", stdin );
-	freopen( "c.out", "w", stdout );
+	freopen( "a.in", "r", stdin );
+	freopen( "a.out", "w", stdout );
 #endif
 
 	i32 T = read<i32>();
 	while( T -- ) {
 		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
-		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
+		std::vector<i32> a( n << 1 );
+		for( auto &x: a )
+			x = read<i32>();
+		std::sort( a.begin(), a.end() );
+		long long res = 0;
+		for( int i = 0; i < ( n << 1 ); i += 2 ) {
+			res += a[i];
 		}
-		printf( "%d\n", cnt );
+		printf( "%lld\n", res );
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * c.cpp 2024-02-18
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -14,6 +14,7 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <map>
 #include <vector>
 #include <algorithm>
 
@@ -57,8 +58,6 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
-
 int main() {
 #ifdef woshiluo
 	freopen( "c.in", "r", stdin );
@@ -68,32 +67,42 @@ int main() {
 	i32 T = read<i32>();
 	while( T -- ) {
 		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
+		std::map<i32, std::vector<i32>> min;
+		std::map<i32, i32> cnt;
 		for( int i = 1; i <= n; i ++ ) {
 			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
+			ci32 val = cur + i;
+			cnt[val] ++;
+			min[val].push_back(cur+1);
+		}
+		std::vector<i32> list;
+		for( auto &[ fir, _ ]: cnt ) 
+			list.push_back(fir);
+		std::reverse( list.begin(), list.end() );
+		int nxt = list[0];
+		std::vector<i32> res;
+		std::map<i32, i32> less;
+		ci32 size = list.size();
+		for( int j = 0; j < size; j ++ ) {
+			ci32 key = list[j];
+			chk_Min( nxt, key );
+			auto &mins = min[key];
+			for( auto &x: mins ) 
+				less[x] ++;
+			while( less.size() ) {
+				if( j + 1 < size && nxt == list[ j + 1 ] )
+						break;
+				if( less.rbegin() -> first <= nxt ) {
+					res.push_back(nxt);
+					nxt --;
+				}
+				less.rbegin() -> second --;
+				if( less.rbegin() -> second == 0 ) 
+					less.erase( less.rbegin() -> first ) ;
 			}
 		}
-		printf( "%d\n", cnt );
+		for( auto &x: res ) 
+			printf( "%d " , x );
+		printf( "\n" );
 	}
 }

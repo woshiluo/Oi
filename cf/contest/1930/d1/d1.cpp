@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * d1.cpp 2024-02-18
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -57,43 +57,57 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
+const int N = 1e6 + 1e4;
 const int INF = 0x3f3f3f3f;
+
+i32 work( const std::vector<i32> &a, ci32 p1, ci32 p2 ) {
+	ci32 len = p2 - p1 + 1;
+	// 0 x 1
+	// 1 1 0 ( not coverd )
+	// 2 x 0 ( coverd );
+	std::vector<std::vector<i32>> f( len + 1, { INF, INF, 0 } );
+	for( int i = 1; i <= len; i ++ ) {
+		ci32 cur = a[ p1 + i - 1 ];
+		if( cur == 0 ) {
+			f[i][0] = Min( f[ i - 1 ][0], Min( f[ i - 1 ][1], f[ i - 1 ][2] ) ) + 1;
+			f[i][1] = INF;
+			f[i][2] = Min( f[ i - 1 ][0], f[ i - 1 ][2] );
+		}
+		else {
+			f[i][0] = Min( f[ i - 1 ][0], Min( f[ i - 1 ][1], f[ i - 1 ][2] ) ) + 1;
+			f[i][1] = f[ i - 1 ][2];
+			f[i][2] = f[ i - 1 ][0];
+		}
+	}
+	return Min( f[len][0], f[len][2] );
+}
 
 int main() {
 #ifdef woshiluo
-	freopen( "c.in", "r", stdin );
-	freopen( "c.out", "w", stdout );
+	freopen( "d1.in", "r", stdin );
+	freopen( "d1.out", "w", stdout );
 #endif
-
+//	{
+//		std::vector<i32> a = { 1, 1, 1, 1, 1, 1, 1 };
+//		printf( "%d\n", work( a, 0, a.size() - 1 ) );
+//	}
 	i32 T = read<i32>();
 	while( T -- ) {
 		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
-		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
+		std::vector<i32> a(n);
+		{
+			static char str[N];
+			scanf( "%s", str );
+			for( int i = 0; i < n; i ++ ) {
+				a[i] = ( str[i] - '0' );
 			}
 		}
-		printf( "%d\n", cnt );
+		long long res = 0;
+		for( int i = 0; i < n; i ++ ) {
+			for( int j = i; j < n; j ++ ) {
+				res += work( a, i, j );
+			}
+		}
+		printf( "%lld\n", res );
 	}
 }

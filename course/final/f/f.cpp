@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * f.cpp 2024-01-11
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -57,42 +57,50 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
+const int N = 1e5 + 1e4;
+
+struct Edge {
+	int to, next;
+} e[ N << 1 ];
+int ehead[N], ecnt;
+void add_edge( ci32 from, ci32 to ) {
+	ecnt ++;
+	e[ecnt].to = to;
+	e[ecnt].next = ehead[from];
+	ehead[from] = ecnt;
+}
+
+int vis[N];
+
+void dfs( int cur ) {
+	if( vis[cur] ) 
+		return ;
+	vis[cur] = true;
+	for( int i = ehead[cur]; i; i = e[i].next ) {
+		dfs( e[i].to );
+	}
+}
 
 int main() {
 #ifdef woshiluo
-	freopen( "c.in", "r", stdin );
-	freopen( "c.out", "w", stdout );
+	freopen( "f.in", "r", stdin );
+	freopen( "f.out", "w", stdout );
 #endif
 
-	i32 T = read<i32>();
-	while( T -- ) {
-		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
+	int n, m;
+	while( scanf( "%d%d", &n, &m ) != EOF ) {
+		memset( ehead, 0, sizeof(int) * ( n + 5 ) );
+		memset( vis, 0, sizeof(int) * ( n + 5 ) );
+		for( int i = 1; i <= m; i ++ ) {
+			ci32 u = read<i32>();
+			ci32 v = read<i32>();
+			add_edge( u, v );
+			add_edge( v, u );
+		}
+		dfs(0);
 		int cnt = 0;
 		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
+			cnt += ( vis[i] == 0 );
 		}
 		printf( "%d\n", cnt );
 	}

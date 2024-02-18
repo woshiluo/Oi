@@ -1,5 +1,5 @@
 /*
- * c.cpp 2024-01-06
+ * b.cpp 2024-01-11
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -57,43 +57,36 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const int INF = 0x3f3f3f3f;
-
 int main() {
 #ifdef woshiluo
-	freopen( "c.in", "r", stdin );
-	freopen( "c.out", "w", stdout );
+	freopen( "b.in", "r", stdin );
+	freopen( "b.out", "w", stdout );
 #endif
 
-	i32 T = read<i32>();
+	int T = read<i32>();
 	while( T -- ) {
 		ci32 n = read<i32>();
-		std::vector<i32> f, g;
-		f.push_back(INF);
-		g.push_back(INF);
-		int cnt = 0;
-		for( int i = 1; i <= n; i ++ ) {
-			ci32 cur = read<i32>();
-			if( f.back() >= cur && g.back() >= cur ) {
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
-			else if( f.back() >= cur ) {
-				f.push_back(cur);
-			}
-			else if( g.back() >= cur ) {
-				g.push_back(cur);
-			}
-			else {
-				cnt ++;
-				if( f.back() < g.back() ) 
-					f.push_back(cur);
-				else
-					g.push_back(cur);
-			}
+		ci32 m = read<i32>();
+		struct Stu {
+			char name[16];
+			int score, time;
+		};
+		std::vector<Stu> a(n);
+		for( auto &x: a ) {
+			scanf( "%s", x.name );
+			x.score = read<i32>();
+			x.time = read<i32>();
 		}
-		printf( "%d\n", cnt );
+		std::sort( a.begin(), a.end(), []( const auto &_a, const auto &_b ) {
+			if( _a.score == _b.score ) {
+				return _a.time < _b.time;
+			}
+			return _a.score > _b.score;
+		});
+		for( int i = 0; i < m; i ++ ) {
+			printf( "%s %d %d\n", a[i].name, a[i].score, a[i].time );
+		}
+		printf( "\n" );
 	}
+	
 }
