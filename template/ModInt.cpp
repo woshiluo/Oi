@@ -1,6 +1,10 @@
+const i32 mod = 1e9 + 7;
+
 struct ModInt {/*{{{*/
 	int cur;
-	ModInt( ll _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
+	ModInt( i32 _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
+	ModInt( i64 _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
+	ModInt( long long _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
 
 	inline ModInt operator+ ( const ModInt &b ) const { return ( cur + b.cur ) % mod; }
 	inline ModInt operator- ( const ModInt &b ) const { return ( ( ( cur - b.cur ) % mod ) + mod ) % mod; }
