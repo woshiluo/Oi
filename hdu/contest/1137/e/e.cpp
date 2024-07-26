@@ -1,5 +1,5 @@
 /*
- * e.cpp 2024-07-08
+ * e.cpp 2024-07-11
  * Copyright (C) 2024 Woshiluo Luo <woshiluo.luo@outlook.com>
  *
  * 「Two roads diverged in a wood,and I—
@@ -15,7 +15,6 @@
 #include <cstdlib>
 
 #include <vector>
-#include <numeric>
 #include <algorithm>
 
 using i32 = int32_t;
@@ -58,13 +57,12 @@ T pow( T a, i32 p ) {
 	return res;
 }/*}}}*/
 
-const i32 mod = 1e9 + 7;
+const i32 mod = 998244353;
 
 struct ModInt {/*{{{*/
 	int cur;
 	ModInt( i32 _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
-	// ModInt( i64 _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
-	ModInt( long long _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
+	ModInt( long long _cur ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
 
 	inline ModInt operator+ ( const ModInt &b ) const { return ( cur + b.cur ) % mod; }
 	inline ModInt operator- ( const ModInt &b ) const { return ( ( ( cur - b.cur ) % mod ) + mod ) % mod; }
@@ -79,34 +77,53 @@ struct ModInt {/*{{{*/
 	inline void output( const char end = '\n' ) { printf( "%d%c", cur, end ); }
 };/*}}}*/
 
+const int N = 1e7 + 5;
+
+ModInt fac[N], ifac[N];
+
+void pre() {
+	fac[0] = 1;
+	for( int i = 1; i < N; i ++ ) 
+		fac[i] = fac[ i - 1 ] * i;
+	ifac[ N - 1 ] = (ModInt) 1 / fac[ N - 1 ];
+	for( int i = N - 2; i >= 0; i -- ) 
+		ifac[i] = ifac[ i + 1 ] * ( i + 1 );
+}
+
 int main() {
 #ifdef woshiluo
 	freopen( "e.in", "r", stdin );
 	freopen( "e.out", "w", stdout );
 #endif
 
+	pre();
 	i32 T = read<i32>();
 	while( T -- ) {
 		ci32 n = read<i32>();
-		ci32 k = read<i32>();
-		
-		std::vector<i32> a(k), b( n - k );
-		ModInt sa = 0, sb = 0;
-		for( auto &x: a ) {
-			x = read<i32>();
-			sa += x;
+		std::vector<i32> list;
+		ModInt base = 1;
+		i32 count = 0;
+		i32 tot = 0;
+		for( int i = 1; i <= n; i ++ ) {
+			static char op[3];
+			scanf( "%s",  op);
+			list.push_back( read<i32>() );
+			base *= ifac[ list.back() ];
+			count += list.back();
+			tot += ( list.back() >> 1 );
 		}
-		for( auto &x: b ) {
-			x = read<i32>();
-			sb += x;
+		base *= fac[ count ];
+		if( tot == ( count >> 1 ) ) {
+			ModInt base2 = fac[ count >> 1 ];
+			for( auto &x: list ) {
+				base2 *= ifac[ x >> 1 ];
+			}
+			ModInt p1 = ( base - base2 ) / 2;
+			ModInt p2 = (ModInt)( ( count & 1 )? 1: 0 ) * base2;
+			( ( p1 + p2 ) / base ).output();
 		}
-
-		ModInt normal_alice = (ModInt) sb / ( n - k ) * (ModInt)( ( ( n - k ) >> 1 ) + ( ( n - k ) & 1 ) );
-		ModInt speical_alice = (ModInt) sa * (ModInt)( ( ( n - k + 1 ) >> 1 ) + ( ( n - k + 1 ) & 1 ) ) / (ModInt)( n - k + 1 );
-
-		ModInt ex_alice = normal_alice + speical_alice;
-		ex_alice.output(' ');
-		( sa + sb - ex_alice ).output();
-
+		else {
+			( (ModInt) 1 / 2 ).output();
+		}
 	}
 }
