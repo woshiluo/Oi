@@ -1,20 +1,46 @@
 const i32 mod = 1e9 + 7;
 
-struct ModInt {/*{{{*/
-	int cur;
-	ModInt( i32 _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
-	ModInt( i64 _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
-	ModInt( long long _cur = 0 ) { cur = ( ( ( _cur % mod ) + mod ) % mod ); }
+template<i32 P>
+struct ModInt {// {{{
+    i32 x;
+    constexpr ModInt() : x {0} {}
+    constexpr ModInt(i64 _x) : x {norm(_x % get_mod())} {}
+    
+    static i32 mod;
 
-	inline ModInt operator+ ( const ModInt &b ) const { return ( cur + b.cur ) % mod; }
-	inline ModInt operator- ( const ModInt &b ) const { return ( ( ( cur - b.cur ) % mod ) + mod ) % mod; }
-	inline ModInt operator* ( const ModInt &b ) const { return ( 1LL * cur * b.cur ) % mod; }
-	inline ModInt operator/ ( const ModInt &b ) const { return ( 1LL * cur * pow( b, mod - 2 ).cur ) % mod; }
+    constexpr static i32 get_mod() { return P > 0? P: mod; }
+    constexpr static void set_mod(i32 _mod) { mod = _mod; }
 
-	inline void operator+= ( const ModInt &b ) { (*this) = (*this) + b; }
-	inline void operator-= ( const ModInt &b ) { (*this) = (*this) - b; }
-	inline void operator*= ( const ModInt &b ) { (*this) = (*this) * b; }
-	inline void operator/= ( const ModInt &b ) { (*this) = (*this) / b; }
+    static constexpr i32 norm(i32 x) {
+        if (x < 0) {
+            x += get_mod();
+        }
+        if (x >= get_mod()) {
+            x -= get_mod();
+        }
+        return x;
+    }
+    constexpr i32 val() const { return x; }
+    constexpr ModInt operator-() const {
+        ModInt res;
+        res.x = norm(get_mod() - x);
+        return res;
+    }
 
-	inline void output( const char end = '\n' ) { printf( "%d%c", cur, end ); }
-};/*}}}*/
+    constexpr ModInt inv() const { return pow(*this, get_mod() - 2); }
+
+    constexpr ModInt& operator*=(const ModInt &rhs) & { x = (((i64)x) * rhs.x) % get_mod(); return *this; }
+    constexpr ModInt& operator+=(const ModInt &rhs) & { x = norm(x + rhs.x); return *this; }
+    constexpr ModInt& operator-=(const ModInt rhs) & { x = norm(x - rhs.x); return *this; }
+    constexpr ModInt& operator/=(const ModInt rhs) & { return *this *= rhs.inv(); }
+
+    friend constexpr ModInt operator*(const ModInt& lhs, const ModInt& rhs) { ModInt res = lhs; res *= rhs; return res; }
+    friend constexpr ModInt operator+(const ModInt& lhs, const ModInt& rhs) { ModInt res = lhs; res += rhs; return res; }
+    friend constexpr ModInt operator-(const ModInt& lhs, const ModInt& rhs) { ModInt res = lhs; res -= rhs; return res; }
+    friend constexpr ModInt operator/(const ModInt& lhs, const ModInt& rhs) { ModInt res = lhs; res /= rhs; return res; }
+
+    friend constexpr bool operator==(const ModInt& lhs, const ModInt& rhs) { return lhs.val() == rhs.val(); }
+    friend constexpr bool operator!=(const ModInt& lhs, const ModInt& rhs) { return lhs.val() != rhs.val(); }
+//    friend constexpr bool operator<(const ModInt& lhs, const ModInt& rhs) { return lhs.val() < rhs.val(); }
+	void output( const char end = '\n' ) { printf( "%" PRId32 "%c", x, end ); }
+};// }}} 
