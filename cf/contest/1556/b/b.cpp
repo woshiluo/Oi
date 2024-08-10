@@ -52,10 +52,10 @@ T pow( T a, int p ) {
 }/*}}}*/
 
 inline int lowbit( int cur ) { return cur & ( - cur ); }
-struct BIT {
+struct bit {
 	int n;
 	std::vector<int> bit;
-	BIT( int _size ) {
+	bit( int _size ) {
 		n = _size + 10;
 		bit.resize(n);
 	}

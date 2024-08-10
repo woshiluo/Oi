@@ -57,6 +57,22 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "iostream": "cpp",
+    "deque": "cpp",
+    "vector": "cpp",
+    "ostream": "cpp",
+    "random": "cpp",
+    "array": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "barrier": "cpp",
+    "chrono": "cpp",
+    "latch": "cpp",
+    "limits": "cpp",
+    "semaphore": "cpp",
+    "valarray": "cpp"
   }
 }

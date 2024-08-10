@@ -1,7 +1,7 @@
 struct Set {
 	int set[N];
-	void init( cint n ) { for( int i = 0; i <= n; i ++ ) set[i] = i; }
-	int get_fa( cint cur ) {
+	void init( ci32 n ) { for( int i = 0; i <= n; i ++ ) set[i] = i; }
+	int get_fa( ci32 cur ) {
 		if( set[cur] == cur )
 			return cur;
 		set[cur] = get_fa( set[cur] );
