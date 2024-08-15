@@ -58,7 +58,7 @@ struct SegmentTree {
 
 		return res;
 	}
-	void query_add( int from, int to, int val, int cur, int left, int rig ) {
+	void query_set( int from, int to, int val, int cur, int left, int rig ) {
 		if( from <= left && rig <= to ) {
 			tree[cur].max += val;
 			tree[cur].lazy += val;
@@ -68,14 +68,14 @@ struct SegmentTree {
 		int mid = ( left + rig ) >> 1;
 		push_down(cur);
 		if( from <= mid )
-			query_add( from, to, val, cur << 1, left, mid );
+			query_set( from, to, val, cur << 1, left, mid );
 		if( to > mid )
-			query_add( from, to, val, cur << 1 | 1, mid + 1, rig );
+			query_set( from, to, val, cur << 1 | 1, mid + 1, rig );
 		push_up(cur);
 	}
 
 	int max( int from, int to ) { return query_max( from, to, 1, 1, n ); }
-	void add( int from, int to, int val ) { query_add( from, to, val, 1, 1, n ); }
+	void add( int from, int to, int val ) { query_set( from, to, val, 1, 1, n ); }
 } seg;
 
 struct Graph {

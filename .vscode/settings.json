@@ -73,6 +73,8 @@
     "latch": "cpp",
     "limits": "cpp",
     "semaphore": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "cmath": "cpp",
+    "complex": "cpp"
   }
 }
