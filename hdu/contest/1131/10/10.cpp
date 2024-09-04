@@ -67,7 +67,6 @@ i32 la_force[K];
 i32 full_pow( ci32 cur ) { return 1 << cur; }
 i32 get_pos( ci32 cur, ci32 pos ) { return ( cur >> pos ) & 1; }
 struct Trie {
-	struct Node;
 	struct Node {
 		i32 la, depth;
 		Node *son[2];
